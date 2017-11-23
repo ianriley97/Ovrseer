@@ -1,3 +1,3 @@
 module.exports = app => {
-  console.log('Logged in as ' + discord.Client.user.tag);
+  console.log('Logged in as ' + app.Client.user.tag);
 };
