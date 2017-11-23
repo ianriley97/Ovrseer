@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./server/server.js');
 var DiscordOptions = {
   owners: [
       '234921929188966401'
