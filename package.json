@@ -1,0 +1,16 @@
+{
+  "name": "ovrseer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "init.js",
+  "scripts": {
+    "start": "nodemon ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "dotenv": "^4.0.0",
+    "return-deep-diff": "^0.2.9"
+  }
+}
