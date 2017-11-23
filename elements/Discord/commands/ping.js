@@ -1,19 +1,18 @@
-exports.run = (client, message) => {
-  message.channel.sendMessage('Ping?')
-    .then(msg => {
-      msg.edit(`Pong! (took: ${msg.createdTimestamp - message.createdTimestamp}ms)`);
-    });
-};
-
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
-  permLevel: 0
+  aliases: []
 };
 
 exports.help = {
   name: 'ping',
   description: 'Ping/Pong command. I wonder what this does? /sarcasm',
   usage: 'ping'
+};
+
+exports.run = (app, message) => {
+  message.channel.send('Ping?')
+    .then(msg => {
+      msg.edit(`Pong! (${msg.createdTimestamp - message.createdTimestamp}ms)`);
+    });
 };
