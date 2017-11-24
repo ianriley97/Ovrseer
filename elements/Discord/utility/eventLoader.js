@@ -31,4 +31,12 @@ module.exports = app => {
     objs.user = user;
     reqEvent('guildBanRemove', app, objs);
   });
+  app.Client.on('guildCreate', (guild) => {
+    objs.guild = guild;
+    reqEvent('guildCreate', app, objs);
+  });
+  app.Client.on('guildDelete', (guild) => {
+    objs.guild = guild;
+    reqEvent('guildDelete', app, objs);
+  });
 };
