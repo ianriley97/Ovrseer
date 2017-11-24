@@ -10,9 +10,9 @@ exports.help = {
   usage: 'flip'
 };
 
-exports.run = (app, message, args) => {
+exports.run = (app, guild, message, params) => {
   message.delete();
-  if(args.length == 0) {
+  if(params.length == 0) {
     const CoinSide = ['Heads', 'Tails'];
     var side = Math.round(Math.random());
     message.reply(" landed on **" + CoinSide[side] + "**");
