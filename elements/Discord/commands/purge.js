@@ -10,8 +10,8 @@ exports.help = {
   usage: 'purge <number>'
 };
 
-exports.run = (app, message, args) => {
-  let messagecount = parseInt(args.join(' '));
+exports.run = (app, message, params) => {
+  let messagecount = parseInt(params.join(' '));
   message.channel.fetchMessages({
     limit: messagecount
   }).then(messages => message.channel.bulkDelete(messages));

@@ -10,17 +10,17 @@ exports.help = {
   usage: 'roll , roll <max> , roll <min> <max>'
 };
 
-exports.run = (app, message, args) => {
+exports.run = (app, message, params) => {
   message.delete();
   var lowNum = 1, highNum = 6;
-  if(args.length > 0) {
-    if(!allNumbers(args) || greaterThanAllowed(args)) return;
-    if(args.length == 1) {
-      highNum = args[0];
+  if(params.length > 0) {
+    if(!allNumbers(params) || greaterThanAllowed(params)) return;
+    if(params.length == 1) {
+      highNum = params[0];
     }
-    else if(args.length == 2) {
-      lowNum = args[0];
-      highNum = args[1];
+    else if(params.length == 2) {
+      lowNum = params[0];
+      highNum = params[1];
     }
   }
   var rollVal = Math.floor(Math.random() * (highNum-lowNum+1) + parseInt(lowNum));

@@ -25,29 +25,32 @@ class Discord {
         });
       });
     });
-    require('./util/eventLoader.js')(this);
+    require('./utility/eventLoader.js')(this);
     this.Client.login(options.token);
   }
   reload(command) {
-  return new Promise((resolve, reject) => {
-    try {
-      delete require.cache[require.resolve(`./commands/${command}`)];
-      let cmd = require(`./commands/${command}`);
-      this.Client.commands.delete(command);
-      this.Client.aliases.forEach((cmd, alias) => {
-        if (cmd === command) this.Client.aliases.delete(alias);
-      });
-      this.Client.commands.set(command, cmd);
-      cmd.conf.aliases.forEach(alias => {
-        this.Client.aliases.set(alias, cmd.help.name);
-      });
-      resolve();
-    }
-    catch (e){
-      reject(e);
-    }
-  });
-};
+    return new Promise((resolve, reject) => {
+      try {
+        delete require.cache[require.resolve(`./commands/${command}`)];
+        let cmd = require(`./commands/${command}`);
+        this.Client.commands.delete(command);
+        this.Client.aliases.forEach((cmd, alias) => {
+          if (cmd === command) this.Client.aliases.delete(alias);
+        });
+        this.Client.commands.set(command, cmd);
+        cmd.conf.aliases.forEach(alias => {
+          this.Client.aliases.set(alias, cmd.help.name);
+        });
+        resolve();
+      }
+      catch (e){
+        reject(e);
+      }
+    });
+  }
+  SetCurrentPrefix(newPrefix) {
+    this.CmdPrefix = newPrefix;
+  }
 }
 module.exports = Discord;
 

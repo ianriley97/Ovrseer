@@ -1,5 +1,6 @@
-module.exports = message => {
-  let client = message.client;
+module.exports = (app, objs) => {
+  var message = objs.message;
+  var client = app.Client;
   if (message.author.bot) return;
   if (!message.content.startsWith(app.CmdPrefix)) return;
   let command = message.content.split(' ')[0].slice(app.CmdPrefix.length);
