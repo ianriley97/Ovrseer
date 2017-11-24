@@ -16,11 +16,11 @@ module.exports = app => {
     objs.member = member;
     reqEvent('guildMemberRemove', app, objs);
   });
-  app.Client.on('guildMemberUpdate', (oMember, nMember) => {
-    objs.oMember = oMember;
-    objs.nMember = nMember;
-    reqEvent('guildMemberUpdate', app, objs);
-  });
+  // app.Client.on('guildMemberUpdate', (oMember, nMember) => {
+  //   objs.oMember = oMember;
+  //   objs.nMember = nMember;
+  //   reqEvent('guildMemberUpdate', app, objs);
+  // });
   app.Client.on('guildBanAdd', (guild, user) => {
     objs.guild = guild;
     objs.user = user;

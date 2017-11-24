@@ -10,10 +10,10 @@ exports.help = {
   usage: 'help [command]'
 };
 
-exports.run = (app, message, params) => {
-  var msg = "Current prefix is: **" + app.CmdPrefix + "**";
+exports.run = (app, guild, message, params) => {
+  var msg = "Current prefix is: **" + guild.CmdPrefix + "**";
   if(params.length > 0) {
-    app.SetCurrentPrefix(params[0]);
+    guild.SetCmdPrefix(params[0]);
     msg = "Changed the prefix to **" + params + "**";
   }
   message.reply(msg);
