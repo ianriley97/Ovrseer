@@ -9,7 +9,7 @@ class Client {
     const fs = require('file-system');
     this.Client = new DiscordJS.Client({owner:[process.env.DISCORD_OWNER_ID]});
     this.Commands = new DiscordJS.Collection();
-    this.Guilds = new DiscordJS.Collection();;
+    this.Guilds = new DiscordJS.Collection();
     require('../utility/commandLoader.js')(this);
     require('../utility/guildLoader.js')(this);
     require('../utility/eventLoader.js')(this);
