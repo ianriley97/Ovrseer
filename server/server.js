@@ -20,7 +20,7 @@ App.get('/', function(req, res) {
 });
 
 App.listen(port, function() {
-    console.log('Our app is running on http://localhost:' + port);
+    console.log('App is running on http://localhost:' + port);
 });
 
 

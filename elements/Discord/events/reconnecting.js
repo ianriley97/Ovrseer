@@ -1,3 +1,5 @@
+const Log = require('../../../utility/logger.js');
+
 module.exports = (app, objs) => {
-  console.log(`Reconnecting at ${new Date()}`);
+  Log.reconnecting(app.Client.user.tag + ' attempting to reconnect...');
 };
