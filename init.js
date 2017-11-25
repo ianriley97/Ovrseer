@@ -9,5 +9,5 @@ require('dotenv').config();
   EXP_PER_RANK=[amount increased of exp needed per rank]
   EXP_GAIN_TIME_FRAME=[time in seconds between each allowable exp gain]
 */
-// require('./server/server.js');
+require('./server/server.js');
 var Discord = new (require('./elements/Discord/Objects/client.js'))();
