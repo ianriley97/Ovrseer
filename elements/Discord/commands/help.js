@@ -12,15 +12,15 @@ exports.Help = {
 
 exports.Run = (app, guild, member, message, params) => {
   if (!params[0]) {
-    const commandNames = Array.from(app.Client.commands.keys());
+    const commandNames = Array.from(app.Commands.keys());
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-    message.channel.send(`= Command List =\n\n[Use ${guild.CmdPrefix}help <commandname> for details]\n\n${app.Client.commands.map(c => `${guild.CmdPrefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}`).join('\n')}`, {code:'asciidoc'});
+    message.channel.send(`= Command List =\n\n[Use ${guild.CmdPrefix}help <commandname> for details]\n\n${app.Commands.map(c => `${guild.CmdPrefix}${c.Help.name}${' '.repeat(longest - c.Help.name.length)} :: ${c.Help.description}`).join('\n')}`, {code:'asciidoc'});
   }
   else {
-    let command = params[0];
-    if (app.Client.commands.has(command)) {
-      command = app.Client.commands.get(command);
-      message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage::${command.help.usage}`, {code:'asciidoc'});
+    let cmd = params[0];
+    cmd = app.GetCommand(cmd);
+    if (cmd) {
+      message.channel.send(`= ${cmd.Help.name} = \n${cmd.Help.description}\nusage::${cmd.Help.usage}`, {code:'asciidoc'});
     }
   }
 };

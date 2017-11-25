@@ -15,15 +15,20 @@ class Client {
     require('../utility/eventLoader.js')(this);
     this.Client.login(process.env.DISCORD_BOT_TOKEN);
   };
-  GetCommand(cmd) {
-    var foundCmd = this.Commands.get(cmd);
+  GetCommand(cmdStr) {
+    var foundCmd;
+    this.Commands.forEach((value, key, thisMap) => {
+      if(key == cmdStr || HasAlias(value, cmdStr)) {
+        foundCmd = value;
+        return;
+      }
+    });
     return foundCmd;
   };
   AddCommand(cmd) {
     Log.command('Loading command: ' + cmd.Help.name + '...');
     var newCmd = new Command(cmd);
     this.Commands.set(cmd.Help.name, newCmd);
-    cmd.Config.aliases.forEach(alias => this.Commands.set(alias, newCmd));
   };
   GetGuild(guild) {
     var foundGuild = this.Guilds.get(guild.id);
@@ -43,3 +48,14 @@ class Client {
 }
 
 module.exports = Client;
+
+function HasAlias(cmd, cmdStr) {
+  var found = false;
+  cmd.Config.aliases.forEach(alias => {
+    if(alias == cmdStr) {
+      found = true;
+      return;
+    }
+  });
+  return found;
+}

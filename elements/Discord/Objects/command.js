@@ -3,7 +3,7 @@ const DiscordJS = require('discord.js');
 class Command {
   constructor(cmd) {
     this.Config = cmd.Config;
-    this.Help = cmd.Config;
+    this.Help = cmd.Help;
     this.Run = cmd.Run;
   }
 }
