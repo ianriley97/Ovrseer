@@ -11,5 +11,5 @@ exports.Help = {
 };
 
 exports.Run = (app, guild, member, message, params) => {
-  message.reply(' you have ' + member.Exp + ' of ' + member.CurLvlMaxExp + ' exp.');
+  message.reply(` you are **Rank ${member.Level}** and have **${member.Exp} of ${member.CurLvlMaxExp}** exp.`);
 }
