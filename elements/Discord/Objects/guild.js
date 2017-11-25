@@ -20,7 +20,7 @@ class Guild {
   AddMember(member) {
     var newMember = new Member(member);
     this.Members.set(member.id, newMember);
-    Log.default('Member, \"' + member.name + '\" joined guild \"' + this.Guild.name + '\"');
+    Log.default('Member, \"' + member.username + '\" joined guild \"' + this.Guild.name + '\"');
     return newMember;
   }
   RemoveMember(member) {
