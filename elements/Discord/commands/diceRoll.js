@@ -1,16 +1,16 @@
-exports.conf = {
+exports.Config = {
   enabled: true,
   guildOnly: false,
   aliases: []
 };
 
-exports.help = {
+exports.Help = {
   name: 'roll',
   description: 'Rolls a number between 0 and <max> (default 6) or between <min> and <max>.',
   usage: 'roll , roll <max> , roll <min> <max>'
 };
 
-exports.run = (app, guild, message, params) => {
+exports.Run = (app, guild, message, params) => {
   message.delete();
   var lowNum = 1, highNum = 6;
   if(params.length > 0) {

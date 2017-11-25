@@ -1,16 +1,16 @@
-exports.conf = {
+exports.Config = {
   enabled: true,
   guildOnly: false,
   aliases: []
 };
 
-exports.help = {
+exports.Help = {
   name: 'flip',
   description: 'Flips a coin for Heads or Tails.',
   usage: 'flip'
 };
 
-exports.run = (app, guild, message, params) => {
+exports.Run = (app, guild, message, params) => {
   message.delete();
   if(params.length == 0) {
     const CoinSide = ['Heads', 'Tails'];

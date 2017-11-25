@@ -1,3 +1,5 @@
+const Log = require('../../../utility/logger.js');
+
 module.exports = (app, objs) => {
-  console.log(`You have been disconnected at ${new Date()}`);
+  Log.disconnected(app.Client.user.tag + ' has been disconnected.');
 };

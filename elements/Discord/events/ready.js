@@ -1,3 +1,5 @@
+const Log = require('../../../utility/logger.js');
+
 module.exports = (app, objs) => {
-  console.log('Logged in as ' + app.Client.user.tag);
+  Log.ready(app.Client.user.tag + ' is ready.');
 };

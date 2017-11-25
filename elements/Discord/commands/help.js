@@ -1,16 +1,16 @@
-exports.conf = {
+exports.Config = {
   enabled: true,
   guildOnly: false,
   aliases: []
 };
 
-exports.help = {
+exports.Help = {
   name: 'help',
   description: 'Displays all the available commands for your permission level.',
   usage: 'help [command]'
 };
 
-exports.run = (app, guild, message, params) => {
+exports.Run = (app, guild, message, params) => {
   if (!params[0]) {
     const commandNames = Array.from(app.Client.commands.keys());
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
