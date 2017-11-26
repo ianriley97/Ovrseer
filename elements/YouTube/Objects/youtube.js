@@ -22,7 +22,6 @@ class YouTube {
       else {
         this.IsPlaying = true;
         this.AddToQueue(args, 'Now Playing', cb, () => {
-          console.log(this.Queue);
           this.PlayMedia(this.Queue[0].Id);
         });
       }
@@ -51,6 +50,7 @@ class YouTube {
         if (err) throw new Error(err);
         this.Queue.push(new Audio(id, info));
         cb('**(' + msgState + ')** ' + info.title);
+        if(playfn) playfn();
       });
     });
   }
