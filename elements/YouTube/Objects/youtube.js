@@ -22,13 +22,13 @@ class YouTube {
       else {
         this.IsPlaying = true;
         this.AddToQueue(args, 'Now Playing', cb, () => {
-          this.PlayMedia(this.Queue[0].Id);
+          this.PlayMedia(this.Queue[0].Id, cb);
         });
       }
     }
     else cb(" you need to be in a voice channel!");
   }
-  PlayMedia(id) {
+  PlayMedia(id, cb) {
     this.VoiceChannel.join().then(connection => {
       var stream = ytdl("https://www.youtube.com/watch?v=" + id, { filter: 'audioonly' });
       this.SkipsRequested = 0;
@@ -43,7 +43,10 @@ class YouTube {
           this.Dispatcher = null;
           this.IsPlaying = false;
         }
-        else setTimeout(() => { this.PlayMedia(this.Queue[0]); }, 500);
+        else setTimeout(() => {
+          this.PlayMedia(this.Queue[0].Id);
+          cb('**(Now Playing)** ' + this.Queue[0].Info.title);
+        }, 500);
       });
     });
   }
@@ -110,7 +113,7 @@ class YouTube {
   }
   StopMedia(cb) {
     if(this.Dispatcher) {
-      ResetPlayer();
+      this.ResetPlayer();
       cb(' stopped the media player.');
     }
     else cb(' no media player to stop.');

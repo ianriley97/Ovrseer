@@ -12,4 +12,5 @@ exports.Help = {
 
 exports.Run = (app, guild, message, params) => {
   guild.StopMedia((msg) => message.reply(msg));
+  guild.LeaveVoiceChannel((msg) => {});
 };
