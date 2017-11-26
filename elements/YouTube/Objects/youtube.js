@@ -4,21 +4,21 @@ const request = require('request');
 const YTKey = process.env.GOOGLE_KEY;
 const Audio = require('./mediaItem.js');
 class YouTube {
-  constructor(guild, defaultChannel) {
+  constructor(guild) {
     this.Guild = guild;
     this.IsPlaying = false;
     this.Dispatcher;
-    this.DefaultVoiceChannel = defaultChannel;
     this.VoiceChannel;
     this.Queue = [];
     this.SkipsRequested = 0;
     this.Skippers = [];
     this.SkipsRequired = 0;
   }
-  RequestPlay(args, channel, cb) {
-    if (channel || this.VoiceChannel) {
-      if(channel != 'twitch') this.VoiceChannel = channel;
-      if (this.Queue.length > 0 || this.IsPlaying) this.AddToQueue(args, 'Queued:', cb);
+  RequestPlay(args, type, cb, channel, guildChannel) {
+    if(type != 'discord') this.VoiceChannel = guildChannel;
+    else this.VoiceChannel = channel;
+    if (this.VoiceChannel) {
+      if (this.Queue.length > 0 || this.IsPlaying) this.AddToQueue(args, 'Queued', cb);
       else {
         this.IsPlaying = true;
         this.AddToQueue(args, 'Now Playing', cb, () => {
@@ -39,7 +39,10 @@ class YouTube {
         this.SkipsRequested = 0;
         this.Skippers = [];
         this.Queue.shift();
-        if(this.Queue.length <= 0) this.IsPlaying = false;
+        if(this.Queue.length <= 0) {
+          this.Dispatcher = null;
+          this.IsPlaying = false;
+        }
         else setTimeout(() => { this.PlayMedia(this.Queue[0]); }, 500);
       });
     });
@@ -57,15 +60,19 @@ class YouTube {
   GetQueueList() {
     var strList = "```";
     var len = this.Queue.length;
-    if(len == 0) strList += 'EMPTY';
+    if(len == 0) strList += 'Media queue is empty...';
     for (var i = 0; i < this.Queue.length; i++) {
-      var temp = (i + 1) + ': ' + this.Queue[i] + (i == 0 ? ' **(Current Track)**' : '') + '\n';
+      var temp = (i + 1) + ': ' + this.Queue[i].Info.title + (i == 0 ? ' **(Current Track)**' : '') + '\n';
       strList += temp;
     }
     strList += "```";
     return strList;
   }
   RequestSkip(userId, channelMemCount, cb) {
+    if(!this.Dispatcher) {
+      cb(' there is nothing to skip.');
+      return;
+    }
     this.SkipsRequired = Math.ceil((channelMemCount - 1) / 2);
     if(this.Skippers.indexOf(userId) == -1) {
       this.Skippers.push(userId);
@@ -79,16 +86,44 @@ class YouTube {
     else cb(' you can\'t vote again.');
   }
   SkipMedia() {
-    this.Dispatcher.end();
+    if(this.Dispatcher) this.Dispatcher.end();
   }
-  StopMedia() {
+  PauseMedia(cb) {
+    if(this.Dispatcher) {
+      if(!this.Dispatcher.paused) {
+        this.Dispatcher.pause();
+        cb(' paused the media player.')
+      }
+      else cb(' media player already paused.');
+    }
+    else cb(' no media player to pause.');
+  }
+  ResumeMedia(cb) {
+    if(this.Dispatcher) {
+      if(this.Dispatcher.paused) {
+        this.Dispatcher.resume();
+        cb(' started the media player.')
+      }
+      else cb(' media player already playing.')
+    }
+    else cb(' no media player to resume.');
+  }
+  StopMedia(cb) {
+    if(this.Dispatcher) {
+      ResetPlayer();
+      cb(' stopped the media player.');
+    }
+    else cb(' no media player to stop.');
+  }
+  ResetPlayer() {
     this.IsPlaying = false;
     this.Queue = [];
     if(this.Dispatcher) this.Dispatcher.end();
-    this.Dispatcher = null;
     this.VoiceChannel = null;
   }
 }
+
+module.exports = YouTube;
 
 function GetId(str, cb) {
   if (IsYoutube(str)) cb(ytdl.getVideoID(str));
@@ -106,5 +141,3 @@ function SearchForVideo(query, cb) {
 function IsYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
-
-module.exports = YouTube;

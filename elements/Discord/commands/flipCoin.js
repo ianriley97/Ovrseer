@@ -10,7 +10,7 @@ exports.Help = {
   usage: 'flip'
 };
 
-exports.Run = (app, guild, member, message, params) => {
+exports.Run = (app, guild, message, params) => {
   message.delete();
   if(params.length == 0) {
     const CoinSide = ['Heads', 'Tails'];

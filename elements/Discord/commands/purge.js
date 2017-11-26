@@ -10,7 +10,7 @@ exports.Help = {
   usage: 'purge <number>'
 };
 
-exports.Run = (app, guild, member, message, params) => {
+exports.Run = (app, guild, message, params) => {
   let messagecount = parseInt(params.join(' '));
   message.channel.fetchMessages({
     limit: messagecount

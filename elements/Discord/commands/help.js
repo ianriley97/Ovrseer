@@ -10,7 +10,7 @@ exports.Help = {
   usage: 'help <command>'
 };
 
-exports.Run = (app, guild, member, message, params) => {
+exports.Run = (app, guild, message, params) => {
   if (!params[0]) {
     const commandNames = Array.from(app.Commands.keys());
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);

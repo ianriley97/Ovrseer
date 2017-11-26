@@ -10,8 +10,7 @@ exports.Help = {
   usage: 'play <searchstring/videolink>'
 };
 
-exports.Run = (app, guild, member, message, params) => {
-  guild.RequestMedia(params.join(' '), message.member.voiceChannel, (msg) => {
-    message.reply(msg);
-  });
+exports.Run = (app, guild, message, params) => {
+  var member = message.member;
+  guild.RequestMedia(params.join(' '), 'discord', (msg) => message.reply(msg), member.voiceChannel);
 };

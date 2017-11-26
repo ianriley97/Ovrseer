@@ -10,6 +10,9 @@ exports.Help = {
   usage: 'skip'
 };
 
-exports.Run = (app, guild, member, message, params) => {
-
+exports.Run = (app, guild, message, params) => {
+  var member = message.member;
+  guild.RequestSkip(mem.id, member.voiceChannel.members.size, (msg) => {
+    message.reply(msg);
+  });
 };
