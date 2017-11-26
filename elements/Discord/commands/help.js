@@ -7,7 +7,7 @@ exports.Config = {
 exports.Help = {
   name: 'help',
   description: 'Displays all the available commands for your permission level.',
-  usage: 'help [command]'
+  usage: 'help <command>'
 };
 
 exports.Run = (app, guild, member, message, params) => {

@@ -13,10 +13,16 @@
     "discord.js": "^11.2.1",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "^3.2.2",
     "file-system": "^2.2.2",
     "https": "^1.0.0",
     "moment": "^2.19.2",
+    "node-opus": "^0.2.7",
+    "opusscript": "0.0.4",
     "path": "^0.12.7",
-    "return-deep-diff": "^0.2.9"
+    "request": "^2.83.0",
+    "return-deep-diff": "^0.2.9",
+    "ytdl-core": "^0.18.2"
   }
 }
