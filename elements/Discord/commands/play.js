@@ -11,6 +11,7 @@ exports.Help = {
 };
 
 exports.Run = (message, params, objs) => {
+  var guild = objs.guild;
   var member = message.member;
   guild.RequestMedia(params.join(' '), 'discord', (msg) => message.reply(msg), member.voiceChannel);
 };
