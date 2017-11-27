@@ -20,7 +20,7 @@ class Member {
       this.Exp += 1 * ExpGainRate;
       if(this.Exp >= this.CurLvlMaxExp) {
         this.Level += 1;
-        this.Exp -= 0;
+        this.Exp = 0;
         this.CurLvlMaxExp = this.Level * ExpPerRank;
       }
     }
