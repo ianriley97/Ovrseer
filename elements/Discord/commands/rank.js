@@ -10,6 +10,7 @@ exports.Help = {
   usage: 'rank'
 };
 
-exports.Run = (app, guild, message, params) => {
-  message.reply(` you are **Rank ${member.Level}** and have **${member.Exp} of ${member.CurLvlMaxExp}** exp.`);
+exports.Run = (message, params, objs) => {
+  var memberObj = objs.member;
+  message.reply(` you are **Rank ${memberObj.Level}** and have **${memberObj.Exp} of ${memberObj.CurLvlMaxExp}** exp.`);
 }

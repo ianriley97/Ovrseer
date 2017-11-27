@@ -10,9 +10,8 @@ exports.Help = {
   usage: 'ping'
 };
 
-exports.Run = (app, guild, message, params) => {
-  message.channel.send('Ping?')
-    .then(msg => {
+exports.Run = (message, params, objs) => {
+  message.channel.send('Ping?').then(msg => {
       msg.edit(`Pong! (${msg.createdTimestamp - message.createdTimestamp}ms)`);
-    });
+  });
 };
