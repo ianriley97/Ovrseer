@@ -10,7 +10,8 @@ exports.Help = {
   usage: 'help [command]'
 };
 
-exports.Run = (app, guild, message, params) => {
+exports.Run = (message, params, objs) => {
+  var guild = objs.guild;
   var msg = "Current prefix is: **" + guild.CmdPrefix + "**";
   if(params.length > 0) {
     guild.SetCmdPrefix(params[0]);

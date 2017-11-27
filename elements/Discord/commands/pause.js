@@ -10,6 +10,7 @@ exports.Help = {
   usage: 'pause'
 };
 
-exports.Run = (app, guild, message, params) => {
+exports.Run = (message, params, objs) => {
+  var guild = objs.guild;
   guild.PauseMedia((msg) => message.reply(msg));
 };

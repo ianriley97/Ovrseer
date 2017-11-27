@@ -10,6 +10,7 @@ exports.Help = {
   usage: 'leave'
 };
 
-exports.Run = (app, guild, message, params) => {
+exports.Run = (message, params, objs) => {
+  var guild = objs.guild;
   guild.LeaveVoiceChannel();
 };

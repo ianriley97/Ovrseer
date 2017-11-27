@@ -10,7 +10,7 @@ exports.Help = {
   usage: 'roll , roll <max> , roll <min> <max>'
 };
 
-exports.Run = (app, guild, message, params) => {
+exports.Run = (message, params, objs) => {
   message.delete();
   var lowNum = 1, highNum = 6;
   if(params.length > 0) {

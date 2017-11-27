@@ -10,6 +10,7 @@ exports.Help = {
   usage: 'queue , queue <searchstring/videolink>'
 };
 
-exports.Run = (app, guild, message, params) => {
+exports.Run = (message, params, objs) => {
+  var guild = objs.guild;
   message.reply(guild.GetQueueList());
 };

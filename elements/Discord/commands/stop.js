@@ -10,7 +10,8 @@ exports.Help = {
   usage: 'stop'
 };
 
-exports.Run = (app, guild, message, params) => {
+exports.Run = (message, params, objs) => {
+  var guild = objs.guild;
   guild.StopMedia((msg) => message.reply(msg));
   guild.LeaveVoiceChannel((msg) => {});
 };
