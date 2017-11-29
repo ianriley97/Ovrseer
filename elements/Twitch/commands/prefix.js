@@ -11,11 +11,12 @@ exports.Help = {
 };
 
 exports.Run = (message, params, objs) => {
-  var guild = objs.guild;
-  var msg = "Current prefix is: **" + guild.CmdPrefix + "**";
+  var app = objs.app;
+  var channel = objs.channel;
+  var msg = "Current prefix is: **" + channel.CmdPrefix + "**";
   if(params.length > 0) {
-    guild.SetCmdPrefix(params[0]);
+    channel.SetCmdPrefix(params[0]);
     msg = "Changed the prefix to **" + params + "**";
   }
-  message.reply(msg);
+  app.Client.action(channel.Channel, msg);
 };

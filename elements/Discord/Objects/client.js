@@ -1,12 +1,11 @@
 const DiscordJS = require('discord.js');
 const Log = require('../../../utility/logger.js');
 
-const Command = require('./command.js');
+const Command = require('../../Objects/command.js');
 const Guild = require('./guild.js');
 
-class Client {
+class DiscordClient {
   constructor() {
-    const fs = require('file-system');
     this.Client = new DiscordJS.Client({owner:[process.env.DISCORD_OWNER_ID]});
     this.Commands = new DiscordJS.Collection();
     this.Guilds = new DiscordJS.Collection();
@@ -47,7 +46,7 @@ class Client {
   };
 }
 
-module.exports = Client;
+module.exports = DiscordClient;
 
 function HasAlias(cmd, cmdStr) {
   var found = false;

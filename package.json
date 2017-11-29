@@ -24,6 +24,7 @@
     "path": "^0.12.7",
     "request": "^2.83.0",
     "return-deep-diff": "^0.2.9",
+    "tmi.js": "^1.2.1",
     "ytdl-core": "^0.18.2"
   }
 }

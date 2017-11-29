@@ -1,5 +1,4 @@
-const DiscordJS = require('discord.js');
-const Log = require('../../../utility/logger.js');
+const Log = require('../../utility/logger.js');
 
 const ExpGainRate = Number.parseInt(process.env.EXP_GAIN_RATE);
 const ExpGainTimeFrame = Number.parseInt(process.env.EXP_GAIN_TIME_FRAME);
