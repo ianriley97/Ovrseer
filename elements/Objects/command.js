@@ -1,5 +1,3 @@
-const DiscordJS = require('discord.js');
-
 class Command {
   constructor(cmd) {
     this.Config = cmd.Config;

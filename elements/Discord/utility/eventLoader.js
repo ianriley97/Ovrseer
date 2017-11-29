@@ -1,6 +1,6 @@
 const reqEvent = (event, app, objs) => require(`../events/${event}.js`)(app, objs);
 var objs = {};
-module.exports = app => {
+module.exports = (app) => {
   app.Client.on('ready', () => reqEvent('ready', app, objs));
   app.Client.on('reconnecting', () => reqEvent('reconnecting', app, objs));
   app.Client.on('disconnect', () => reqEvent('disconnect', app, objs));

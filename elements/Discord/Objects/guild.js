@@ -1,7 +1,7 @@
 const DiscordJS = require('discord.js');
 const Log = require('../../../utility/logger.js');
 
-const Member = require('./member.js');
+const Member = require('../../Objects/member.js');
 const MediaManager = require('../../YouTube/Objects/youtube.js');
 
 class Guild {
@@ -28,6 +28,7 @@ class Guild {
   }
   RemoveMember(member) {
     this.Members.delete(member.id);
+    Log.default('Member, \"' + member.username + '\" left guild \"' + this.Guild.name + '\"');
   }
   JoinVoiceChannel(channelId, cb) {
     this.Guild.channels.forEach(channel => {
