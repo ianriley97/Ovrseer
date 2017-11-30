@@ -14,5 +14,5 @@ require('dotenv').config();
   TWITCH_CHANNELS=[channels for bot to join]
 */
 // require('./server/server.js');
-var Discord = new (require('./elements/Discord/Objects/client.js'))();
-var Twitch = new (require('./elements/Twitch/Objects/client.js'))();
+require('./utility/commandLoader.js')();
+var Discord = new (require('./elements/Discord/client.js'))();

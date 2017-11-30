@@ -1,8 +1,10 @@
 module.exports = (app, objs) => {
   var message = objs.message;
   if (message.author.bot) return;
-  var guild = app.GetGuild(message.guild);
-  var member = guild.GetMember(message.author);
+  var guild = app.GetGroup(message.guild.id);
+  if(!guild) guild = app.AddGroup(message.guild.id, message.guild);
+  var member = guild.GetMember(message.author.id);
+  if(!member) member = guild.AddMember(message.author.id, message.author);
   member.AddExp();
   var prefix = guild.CmdPrefix;
   if (!message.content.startsWith(prefix)) return;
@@ -12,5 +14,5 @@ module.exports = (app, objs) => {
   objs.app = app;
   objs.guild = guild;
   objs.member = member;
-  if (cmd) cmd.Run(message, params, objs);
+  if (cmd) cmd.Run.Discord(message, params, objs);
 };
