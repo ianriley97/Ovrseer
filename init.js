@@ -16,3 +16,4 @@ require('dotenv').config();
 // require('./server/server.js');
 require('./utility/commandLoader.js')();
 var Discord = new (require('./elements/Discord/client.js'))();
+var Twitch = new (require('./elements/Twitch/client.js'))();

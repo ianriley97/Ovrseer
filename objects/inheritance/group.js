@@ -3,10 +3,13 @@ const Member = require('../member.js');
 
 class Group {
   constructor(object) {
-    this.Object =
+    this.Object = object;
     this.CmdPrefix = process.env.DEFAULT_CMD_PREFIX;
     this.Members = new Collection();
-  }
+  };
+  UpdateObject(object) {
+    this.Object = object;
+  };
   SetCmdPrefix(newPrefix) {
     this.CmdPrefix = newPrefix;
   };

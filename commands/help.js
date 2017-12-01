@@ -16,12 +16,12 @@ exports.Run = {
   Discord: (message, params, objs) => {
     var app = objs.app;
     var guild = objs.guild;
-    message.channel.send(GetMessage(app, params, 'Discord'));
+    message.channel.send(GetMessage(app, params, app.Identity));
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
     var channel = objs.channel;
-    app.Client.action(channel.Channel, GetMessage(app, params, 'Twitch'));
+    app.Client.action(channel.Channel, GetMessage(app ,params, app.Identity));
   }
 }
 

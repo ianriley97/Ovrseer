@@ -13,21 +13,20 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
-    var msg = "Current prefix is: **" + guild.CmdPrefix + "**";
-    if(params.length > 0) {
-      guild.SetCmdPrefix(params[0]);
-      msg = "Changed the prefix to **" + params + "**";
-    }
-    message.reply(msg);
+    message.reply(GetStateStr(params) + "**" + guild.CmdPrefix + "**");
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
     var channel = objs.channel;
-    var msg = "Current prefix is: **" + channel.CmdPrefix + "**";
-    if(params.length > 0) {
-      channel.SetCmdPrefix(params[0]);
-      msg = "Changed the prefix to **" + params + "**";
-    }
-    app.Client.action(channel.Channel, msg);
+    app.Client.action(channel.Object, GetStateStr(params) + channel.CmdPrefix);
   }
+}
+
+function GetStateStr(params) {
+  var str = "Current prefix is: ";
+  if(params.length > 0) {
+    channel.SetCmdPrefix(params[0]);
+    str = "Changed the prefix to: ";
+  }
+  return str;
 }

@@ -1,18 +1,29 @@
-module.exports = (app, objs) => {
-  var message = objs.message;
+const Log = require('../../../utility/logger.js');
+
+module.exports = (app, args) => { // args = [message]
+  var message = args[0];
   if (message.author.bot) return;
-  var guild = app.GetGroup(message.guild.id);
-  if(!guild) guild = app.AddGroup(message.guild.id, message.guild);
-  var member = guild.GetMember(message.author.id);
-  if(!member) member = guild.AddMember(message.author.id, message.author);
-  member.AddExp();
-  var prefix = guild.CmdPrefix;
+  var objs = {};
+  objs.app = app;
+  var g = app.GetGroup(message.guild.id);
+  if(!g) {
+    g = app.AddGroup(message.guild.id, message.guild);
+    Log.Discord(`Guild, "${message.guild.name}", has been added to Groups.`);
+  }
+  else g.UpdateObject(message.guild);
+  objs.guild = g;
+  var mem = g.GetMember(message.author.id);
+  if(!mem) {
+    mem = g.AddMember(message.author.id, message.author);
+    Log.Discord(`Member, "${message.author.username}", has been added to Guild, "${message.guild.name}".`);
+  }
+  else mem.UpdateMember(message.author);
+  mem.AddExp();
+  objs.member = mem;
+  var prefix = g.CmdPrefix;
   if (!message.content.startsWith(prefix)) return;
   let command = message.content.split(' ')[0].slice(prefix.length);
   let params = message.content.split(' ').slice(1);
   let cmd = app.GetCommand(command);
-  objs.app = app;
-  objs.guild = guild;
-  objs.member = member;
-  if (cmd) cmd.Run.Discord(message, params, objs);
+  if (cmd) cmd.Run.Discord(message, params, objs); // objs = { app, guild, member }
 };

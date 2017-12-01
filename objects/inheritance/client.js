@@ -2,7 +2,8 @@ const Commands = require('../../collections/commands.js');
 const Groups = require('../../collections/groups.js');
 
 class Client {
-  constructor(index) {
+  constructor(id, index) {
+    this.Identity = id;
     this.Index = index;
   }
   GetCommand(name) {
@@ -11,8 +12,8 @@ class Client {
   GetGroup(id) {
     return Groups.GetGroup(this.Index, id);
   };
-  AddGroup(id, guild) {
-    return Groups.AddGroup(this.Index, id, guild);
+  AddGroup(id, group) {
+    return Groups.AddGroup(this.Index, id, group);
   };
   RemoveGroup(id) {
     return Groups.RemoveGroup(this.Index, id);
