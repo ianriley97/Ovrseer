@@ -15,7 +15,7 @@ module.exports = (app, args) => { // args = [message]
   var mem = g.GetMember(message.author.id);
   if(!mem) {
     mem = g.AddMember(message.author.id, message.author);
-    Log.Discord(`Member, "${message.author.username}", has been added to Guild, "${message.guild.name}".`);
+    Log.Discord(`Member, "${message.author.username}", has joined Guild, "${message.guild.name}".`);
   }
   else mem.UpdateMember(message.author);
   mem.AddExp();
@@ -25,5 +25,5 @@ module.exports = (app, args) => { // args = [message]
   let command = message.content.split(' ')[0].slice(prefix.length);
   let params = message.content.split(' ').slice(1);
   let cmd = app.GetCommand(command);
-  if (cmd) cmd.Run.Discord(message, params, objs); // objs = { app, guild, member }
+  if (cmd && cmd.Run.Discord) cmd.Run.Discord(message, params, objs); // objs = { app, guild, member }
 };

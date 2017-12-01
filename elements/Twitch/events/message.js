@@ -18,7 +18,7 @@ module.exports = (app, args) => { // args = [channel, userstate, message, self]
   var mem = ch.GetMember(userstate.username);
   if(!mem) {
     mem = ch.AddMember(userstate.username, userstate);
-    Log.Twitch(`Member, "${userstate.username}", has been added to Channel, "${channel}".`);
+    Log.Twitch(`Member, "${userstate.username}", has joined Channel, "${channel}".`);
   }
   else mem.UpdateMember(userstate);
   mem.AddExp();
@@ -29,5 +29,5 @@ module.exports = (app, args) => { // args = [channel, userstate, message, self]
   let params = message.split(' ').slice(1);
   let cmd = app.GetCommand(command);
   // objs => app, channel, message
-  if (cmd) cmd.Run.Twitch(message, params, objs); // objs = { app, channel, member }
+  if (cmd && cmd.Run.Twitch) cmd.Run.Twitch(message, params, objs); // objs = { app, channel, member }
 };
