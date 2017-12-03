@@ -8,7 +8,7 @@ class Guild extends Group {
     // this.Media = new MediaManager(guild);
   }
   JoinVoiceChannel(channelId, cb) {
-    this.Guild.channels.forEach(channel => {
+    this.Object.channels.forEach(channel => {
       if(channel.id === channelId) {
         this.ClientVoiceChannel = channel;
         return;

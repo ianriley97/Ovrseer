@@ -13,6 +13,6 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
-    guild.LeaveVoiceChannel();
+    guild.LeaveVoiceChannel((msg) => message.reply(msg));
   }
 };
