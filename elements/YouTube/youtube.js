@@ -2,31 +2,8 @@ const ytdl = require('ytdl-core');
 const request = require('request');
 
 const YTKey = process.env.GOOGLE_KEY;
-const Audio = require('./mediaItem.js');
 class YouTube {
-  constructor(guild) {
-    this.Guild = guild;
-    this.IsPlaying = false;
-    this.Dispatcher;
-    this.VoiceChannel;
-    this.Queue = [];
-    this.SkipsRequested = 0;
-    this.Skippers = [];
-    this.SkipsRequired = 0;
-  }
-  RequestPlay(args, type, cb, channel, guildChannel) {
-    if(type != 'discord') this.VoiceChannel = guildChannel;
-    else this.VoiceChannel = channel;
-    if (this.VoiceChannel) {
-      if (this.Queue.length > 0 || this.IsPlaying) this.AddToQueue(args, 'Queued', cb);
-      else {
-        this.IsPlaying = true;
-        this.AddToQueue(args, 'Now Playing', cb, () => {
-          this.PlayMedia(this.Queue[0].Id, cb);
-        });
-      }
-    }
-    else cb(" you need to be in a voice channel!");
+  constructor() {
   }
   PlayMedia(id, cb) {
     this.VoiceChannel.join().then(connection => {
@@ -49,27 +26,6 @@ class YouTube {
         }, 500);
       });
     });
-  }
-  AddToQueue(strId, msgState, cb, playfn) {
-    GetId(strId, (id) => {
-      ytdl.getInfo(('https://www.youtube.com/watch?v='+id), (err, info) => {
-        if (err) throw new Error(err);
-        this.Queue.push(new Audio(id, info));
-        cb('**(' + msgState + ')** ' + info.title);
-        if(playfn) playfn();
-      });
-    });
-  }
-  GetQueueList() {
-    var strList = "```";
-    var len = this.Queue.length;
-    if(len == 0) strList += 'Media queue is empty...';
-    for (var i = 0; i < this.Queue.length; i++) {
-      var temp = (i + 1) + ': ' + this.Queue[i].Info.title + (i == 0 ? ' **(Current Track)**' : '') + '\n';
-      strList += temp;
-    }
-    strList += "```";
-    return strList;
   }
   RequestSkip(userId, channelMemCount, cb) {
     if(!this.Dispatcher) {
