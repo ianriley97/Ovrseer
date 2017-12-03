@@ -1,0 +1,23 @@
+const Commands = require('../../collections/commands.js');
+const Groups = require('../../collections/groups.js');
+
+class Client {
+  constructor(id, index) {
+    this.Identity = id;
+    this.Index = index;
+  }
+  GetCommand(name) {
+    return Commands.GetCommand(name);
+  };
+  GetGroup(id) {
+    return Groups.GetGroup(this.Index, id);
+  };
+  AddGroup(id, group) {
+    return Groups.AddGroup(this.Index, id, group);
+  };
+  RemoveGroup(id) {
+    return Groups.RemoveGroup(this.Index, id);
+  };
+}
+
+module.exports = Client;

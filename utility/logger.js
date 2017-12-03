@@ -10,5 +10,7 @@ module.exports = {
   ready: (msg) => LogStyle(chalk.green, msg),
   disconnected: (msg) => LogStyle(chalk.red, msg),
   reconnecting: (msg) => LogStyle(chalk.yellow, msg),
-  command: (msg) => LogStyle(chalk.yellow, msg)
+  command: (msg) => LogStyle(chalk.yellow, msg),
+  Discord: (msg) => LogStyle(chalk.cyan, msg),
+  Twitch: (msg) => LogStyle(chalk.magenta, msg)
 };

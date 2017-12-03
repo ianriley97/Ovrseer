@@ -18,13 +18,13 @@
     "ffmpeg-binaries": "^3.2.2",
     "file-system": "^2.2.2",
     "https": "^1.0.0",
-    "moment": "^2.19.2",
+    "moment": "^2.19.3",
     "node-opus": "^0.2.7",
     "opusscript": "0.0.4",
     "path": "^0.12.7",
     "request": "^2.83.0",
     "return-deep-diff": "^0.2.9",
     "tmi.js": "^1.2.1",
-    "ytdl-core": "^0.18.2"
+    "ytdl-core": "^0.18.3"
   }
 }
