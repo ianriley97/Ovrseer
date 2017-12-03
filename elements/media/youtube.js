@@ -1,3 +1,5 @@
+const Media = require('../../objects/media.js');
+
 const ytdl = require('ytdl-core');
 const request = require('request');
 

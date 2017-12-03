@@ -14,7 +14,7 @@ class MediaManager {
     this.VoiceChannel = channel;
   }
   RequestPlay(requestStr, type, cb, channel, guildChannel) {
-    if(type != 'discord') this.VoiceChannel = guildChannel;
+    this.VoiceChannel = guildChannel;
     else this.VoiceChannel = channel;
     if (this.VoiceChannel) {
       if (this.Queue.length > 0 || this.IsPlaying) this.AddToQueue(args, 'Queued', cb);
