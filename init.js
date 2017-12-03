@@ -13,7 +13,7 @@ require('dotenv').config();
   TWITCH_BOT_NAME=[username of twitch bot's account]
   TWITCH_CHANNELS=[channels for bot to join]
 */
-// require('./server/server.js');
+require('./server/server.js');
 require('./utility/commandLoader.js')();
 var Discord = new (require('./elements/Discord/client.js'))();
 var Twitch = new (require('./elements/Twitch/client.js'))();
