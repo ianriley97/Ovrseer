@@ -3,7 +3,7 @@ const Group = require('./inheritance/group.js');
 
 class Guild extends Group {
   constructor(guild) {
-    super(guild);
+    super(guild, guild.name, "Guild");
     this.ClientVoiceChannel;
     // this.Media = new MediaManager(guild);
   }

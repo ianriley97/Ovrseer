@@ -1,3 +1,5 @@
+const Log = require('../../utility/logger.js')
+
 const Commands = require('../../collections/commands.js');
 const Groups = require('../../collections/groups.js');
 
@@ -13,10 +15,12 @@ class Client {
     return Groups.GetGroup(this.Index, id);
   };
   AddGroup(id, group) {
-    return Groups.AddGroup(this.Index, id, group);
+    var g = Groups.AddGroup(this.Index, id, group);
+    Log[this.Identity](`${g.Identity}, "${g.Name}", has been added to Groups.`);
   };
   RemoveGroup(id) {
-    return Groups.RemoveGroup(this.Index, id);
+    var g = Groups.RemoveGroup(this.Index, id);
+    Log[this.Identity](`${g.Identity}, "${g.Name}", has been removed from Groups.`);
   };
 }
 

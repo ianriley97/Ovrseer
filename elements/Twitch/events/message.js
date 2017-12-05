@@ -1,5 +1,3 @@
-const Log = require('../../../utility/logger.js');
-
 module.exports = (app, args) => { // args = [channel, userstate, message, self]
   var isBot = args[3];
   if (isBot) return;
@@ -9,17 +7,11 @@ module.exports = (app, args) => { // args = [channel, userstate, message, self]
   var objs = {};
   objs.app = app;
   var ch = app.GetGroup(channel);
-  if(!ch) {
-    ch = app.AddGroup(channel, channel);
-    Log.Twitch(`Channel, "${channel}", has been added to Groups.`);
-  }
+  if(!ch) ch = app.AddGroup(channel, channel);
   else ch.UpdateObject(channel);
   objs.channel = ch;
   var mem = ch.GetMember(userstate.username);
-  if(!mem) {
-    mem = ch.AddMember(userstate.username, userstate);
-    Log.Twitch(`Member, "${userstate.username}", has joined Channel, "${channel}".`);
-  }
+  if(!mem) mem = ch.AddMember(userstate.username, userstate);
   else mem.UpdateMember(userstate);
   mem.AddExp();
   objs.member = mem;
