@@ -12,5 +12,7 @@ module.exports = {
   reconnecting: (msg) => LogStyle(chalk.yellow, msg),
   command: (msg) => LogStyle(chalk.yellow, msg),
   Discord: (msg) => LogStyle(chalk.cyan, msg),
-  Twitch: (msg) => LogStyle(chalk.magenta, msg)
+  Guild: (msg) => LogStyle(chalk.cyan, msg),
+  Twitch: (msg) => LogStyle(chalk.magenta, msg),
+  Channel: (msg) => LogStyle(chalk.magenta, msg)
 };
