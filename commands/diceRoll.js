@@ -13,14 +13,14 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var nums = GenerateNumbers(params);
-    message.reply(` rolled **${nums.val}**`);
+    if(num) message.reply(` rolled **${nums.val}**`);
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
     var channel = objs.channel;
     var member = objs.member;
     var nums = GenerateNumbers(params);
-    app.Client.action(channel.Object, `${member.Object['display-name']} rolled ${nums.val}`);
+    if(nums) app.Client.action(channel.Object, `${member.Object['display-name']} rolled ${nums.val}`);
   }
 }
 
