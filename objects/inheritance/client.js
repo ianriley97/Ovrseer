@@ -17,10 +17,12 @@ class Client {
   AddGroup(id, group) {
     var g = Groups.AddGroup(this.Index, id, group);
     Log[this.Identity](`${g.Identity}, "${g.Name}", has been added to Groups.`);
+    return g;
   };
   RemoveGroup(id) {
     var g = Groups.RemoveGroup(this.Index, id);
     Log[this.Identity](`${g.Identity}, "${g.Name}", has been removed from Groups.`);
+    return g;
   };
 }
 
