@@ -9,7 +9,7 @@ class Guild extends Group {
   }
   JoinVoiceChannel(channelId, cb) {
     this.Object.channels.forEach(channel => {
-      if(channel.id === channelId) {
+      if(channel.id == channelId || channel.name == channelId) {
         this.ClientVoiceChannel = channel;
         return;
       }
