@@ -13,7 +13,7 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var nums = GenerateNumbers(params);
-    if(num) message.reply(` rolled **${nums.val}**`);
+    if(nums) message.reply(` rolled **${nums.val}**`);
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
