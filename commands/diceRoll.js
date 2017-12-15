@@ -6,7 +6,7 @@ exports.Config = {
 
 exports.Help = {
   name: 'roll',
-  description: 'Rolls a number between 0 and <max> (default 6) or between <min> and <max>.',
+  description: 'Rolls a number between 0 and <max> (default 6) or between <min> and <max>. (up to 1,000,000)',
   usage: 'roll , roll <max> , roll <min> <max>'
 };
 

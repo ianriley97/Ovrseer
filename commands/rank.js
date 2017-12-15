@@ -6,7 +6,7 @@ exports.Config = {
 
 exports.Help = {
   name: 'rank',
-  description: 'Shows our current guild ranking.',
+  description: 'Shows your current guild ranking.',
   usage: 'rank'
 };
 
