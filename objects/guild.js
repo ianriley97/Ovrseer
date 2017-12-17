@@ -27,9 +27,6 @@ class Guild extends Group {
     this.Media.RequestMedia(args, cb, channel);
     this.ClientVoiceChannel = this.Media.VoiceChannel;
   }
-  GetCurMediaInfo(cb) {
-
-  }
   GetQueueList() {
     return this.Media.GetQueueList();
   }
