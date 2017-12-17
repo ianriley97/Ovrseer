@@ -2,7 +2,7 @@ const Commands = require('../collections/commands.js');
 
 exports.Config = {
   enabled: true,
-  guildOnly: false,
+  default: true,
   aliases: []
 };
 

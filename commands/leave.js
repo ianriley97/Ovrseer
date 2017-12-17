@@ -1,6 +1,6 @@
 exports.Config = {
   enabled: true,
-  guildOnly: false,
+  default: false,
   aliases: []
 };
 

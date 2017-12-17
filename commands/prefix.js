@@ -1,6 +1,6 @@
 exports.Config = {
   enabled: true,
-  guildOnly: false,
+  default: true,
   aliases: []
 };
 
@@ -13,19 +13,19 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
-    message.reply(GetStateStr(params) + "**" + guild.CmdPrefix + "**");
+    message.reply(GetStateStr(guild, params) + "**" + guild.CmdPrefix + "**");
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
     var channel = objs.channel;
-    app.Client.action(channel.Object, GetStateStr(params) + channel.CmdPrefix);
+    app.Client.action(channel.Object, GetStateStr(channel, params) + channel.CmdPrefix);
   }
 }
 
-function GetStateStr(params) {
+function GetStateStr(group, params) {
   var str = "Current prefix is: ";
   if(params.length > 0) {
-    channel.SetCmdPrefix(params[0]);
+    group.SetCmdPrefix(params[0]);
     str = "Changed the prefix to: ";
   }
   return str;

@@ -16,10 +16,15 @@ module.exports = (app, args) => { // args = [channel, userstate, message, self]
   mem.AddExp();
   objs.member = mem;
   var prefix = ch.CmdPrefix;
-  if (!message.startsWith(prefix)) return;
+  var def = false;
+  if (!message.content.startsWith(prefix)) {
+    prefix = process.env.DEFAULT_CMD_PREFIX;
+    if (!message.content.startsWith(process.env.DEFAULT_CMD_PREFIX)) return;
+    def = true;
+  }
   let command = message.split(' ')[0].slice(prefix.length);
   let params = message.split(' ').slice(1);
   let cmd = app.GetCommand(command);
-  // objs => app, channel, message
+  if (def && !cmd.Config.default) return;
   if (cmd && cmd.Run.Twitch) cmd.Run.Twitch(message, params, objs); // objs = { app, channel, member }
 };

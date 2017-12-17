@@ -1,11 +1,11 @@
 const Group = require('./inheritance/group.js');
-// const MediaManager = require('../../YouTube/Objects/youtube.js');
+const MediaManager = require('./media.js');
 
 class Guild extends Group {
   constructor(guild) {
     super(guild, guild.name, "Guild");
     this.ClientVoiceChannel;
-    // this.Media = new MediaManager(guild);
+    this.Media = new MediaManager();
   }
   JoinVoiceChannel(channelId, cb) {
     this.Object.channels.forEach(channel => {
@@ -22,7 +22,7 @@ class Guild extends Group {
     if(channel) channel.leave();
     else cb(' client is not in a voice channel.');
     this.ClientVoiceChannel = null;
-    // this.Media.ResetPlayer();
+    this.Media.ResetPlayer();
   }
   // RequestMedia(args, type, cb, channel) {
   //   this.Media.RequestPlay(args, type, cb, channel, this.ClientVoiceChannel);

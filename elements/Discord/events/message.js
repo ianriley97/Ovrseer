@@ -13,9 +13,15 @@ module.exports = (app, args) => { // args = [message]
   mem.AddExp();
   objs.member = mem;
   var prefix = g.CmdPrefix;
-  if (!message.content.startsWith(prefix)) return;
+  var def = false;
+  if (!message.content.startsWith(prefix)) {
+    prefix = process.env.DEFAULT_CMD_PREFIX;
+    if (!message.content.startsWith(process.env.DEFAULT_CMD_PREFIX)) return;
+    def = true;
+  }
   let command = message.content.split(' ')[0].slice(prefix.length);
   let params = message.content.split(' ').slice(1);
   let cmd = app.GetCommand(command);
+  if (def && !cmd.Config.default) return;
   if (cmd && cmd.Run.Discord) cmd.Run.Discord(message, params, objs); // objs = { app, guild, member }
 };
