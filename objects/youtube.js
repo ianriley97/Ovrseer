@@ -4,22 +4,26 @@ const request = require('request');
 const YTKey = process.env.GOOGLE_KEY;
 
 class YouTube {
-  constructor() {
+  constructor(strId, cb) {
     this.SongInfo;
+    this.GetStream(strId, (stream) => {
+      this.Stream = stream;
+      cb();
+    });
   }
-  RequestSong(strId, cb) {
+  GetStream(strId, cb) {
     var stream;
     GetId(strId, (id) => {
       ytdl.getInfo(('https://www.youtube.com/watch?v='+id), (err, info) => {
         if (err) throw new Error(err);
         this.SongInfo = info;
         stream = ytdl("https://www.youtube.com/watch?v=" + id, { filter: 'audioonly' });
+        cb(stream);
       });
     });
-    cb(stream);
   }
-  GetSongInfo() {
-    return this.SongInfo;
+  GetSongTitle() {
+    if(this.SongInfo) return this.SongInfo.title;
   }
 }
 

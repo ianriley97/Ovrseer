@@ -13,19 +13,45 @@ class MediaManager {
   SetVoiceChannel(channel) {
     this.VoiceChannel = channel;
   }
-  RequestPlay(requestStr, cb) {
+  RequestMedia(args, cb, voiceChannel) {
+    this.SetVoiceChannel(voiceChannel);
     if (this.VoiceChannel) {
       if (this.Queue.length > 0 || this.IsPlaying) this.AddToQueue(args, 'Queued', cb);
       else {
         this.IsPlaying = true;
         this.AddToQueue(args, 'Now Playing', cb, () => {
-          this.PlayMedia(this.Queue[0].Id, cb);
+          this.PlaySong(this.Queue[0].Stream, cb);
         });
       }
     }
     else cb(" you need to be in a voice channel!");
   }
-  AddToQueue(strId, msgState, cb) {
+  AddToQueue(strId, msgState, cb, playfn) {
+    this.Queue.push(new YouTube(strId, () => {
+      if (playfn) playfn();
+      cb(msgState, this.Queue[this.Queue.length-1].GetSongTitle());
+    }));
+  }
+  PlaySong(stream, cb) {
+    this.VoiceChannel.join().then((connection) => {
+      this.SkipsRequested = 0;
+      this.Skippers = [];
+      this.Dispatcher = connection.playStream(stream);
+      this.IsPlaying = true;
+      this.Dispatcher.on('end', (reason) => {
+        this.SkipsRequested = 0;
+        this.Skippers = [];
+        this.Queue.shift();
+        if(this.Queue.length <= 0) {
+          this.Dispatcher = null;
+          this.IsPlaying = false;
+        }
+        else setTimeout(() => {
+          this.PlaySong(this.Queue[0].Stream, cb);
+          cb('Now Playing', this.Queue[0].GetSongTitle());
+        }, 500);
+      });
+    });
   }
   RequestSkip(userId, channelMemCount, cb) {
     if(!this.Dispatcher) {
@@ -81,14 +107,13 @@ class MediaManager {
     this.VoiceChannel = null;
   }
   GetQueueList() {
-    var strList = "```";
+    var strList = '';
     var len = this.Queue.length;
     if(len == 0) strList += 'Media queue is empty...';
     for (var i = 0; i < this.Queue.length; i++) {
-      var temp = (i + 1) + ': ' + this.Queue[i].Info.title + (i == 0 ? ' **(Current Track)**' : '') + '\n';
+      var temp = (i + 1) + ': ' + this.Queue[i].GetSongTitle() + (i == 0 ? ' **(Current Track)**' : '') + '\n';
       strList += temp;
     }
-    strList += "```";
     return strList;
   }
 }

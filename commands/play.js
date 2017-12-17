@@ -1,6 +1,6 @@
 exports.Config = {
   enabled: true,
-  guildOnly: false,
+  default: false,
   aliases: []
 };
 
@@ -14,6 +14,6 @@ exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
     var member = message.member;
-    guild.RequestMedia(params.join(' '), 'discord', (msg) => message.reply(msg), member.voiceChannel);
+    guild.RequestMedia(params.join(' '), (msg, info) => (info ? message.reply(`**(${msg})** : ${info}`) : message.reply(`${msg}`)), member.voiceChannel);
   }
 };

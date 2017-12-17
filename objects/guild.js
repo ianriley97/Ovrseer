@@ -18,34 +18,33 @@ class Guild extends Group {
     else cb(' voice channel does not exist.');
   }
   LeaveVoiceChannel(cb) {
-    var channel = this.ClientVoiceChannel;
-    if(channel) channel.leave();
+    if (this.ClientVoiceChannel) this.ClientVoiceChannel.leave();
     else cb(' client is not in a voice channel.');
     this.ClientVoiceChannel = null;
     this.Media.ResetPlayer();
   }
-  // RequestMedia(args, type, cb, channel) {
-  //   this.Media.RequestPlay(args, type, cb, channel, this.ClientVoiceChannel);
-  //   this.ClientVoiceChannel = this.Media.VoiceChannel;
-  // }
-  // GetCurMediaInfo(cb) {
-  //
-  // }
-  // GetQueueList() {
-  //   return this.Media.GetQueueList();
-  // }
-  // RequestSkip(userId, channelMemCount, cb) {
-  //   this.Media.RequestSkip(userId, channelMemCount, cb)
-  // }
-  // PauseMedia(cb) {
-  //   this.Media.PauseMedia(cb);
-  // }
-  // ResumeMedia(cb) {
-  //   this.Media.ResumeMedia(cb);
-  // }
-  // StopMedia(cb) {
-  //   this.Media.StopMedia(cb);
-  // }
+  RequestMedia(args, cb, channel) {
+    this.Media.RequestMedia(args, cb, channel);
+    this.ClientVoiceChannel = this.Media.VoiceChannel;
+  }
+  GetCurMediaInfo(cb) {
+
+  }
+  GetQueueList() {
+    return this.Media.GetQueueList();
+  }
+  RequestSkip(userId, channelMemCount, cb) {
+    this.Media.RequestSkip(userId, channelMemCount, cb)
+  }
+  PauseMedia(cb) {
+    this.Media.PauseMedia(cb);
+  }
+  ResumeMedia(cb) {
+    this.Media.ResumeMedia(cb);
+  }
+  StopMedia(cb) {
+    this.Media.StopMedia(cb);
+  }
 }
 
 module.exports = Guild;

@@ -1,18 +1,18 @@
 exports.Config = {
   enabled: true,
-  guildOnly: false,
+  default: false,
   aliases: []
 };
 
 exports.Help = {
-  name: 'resume',
-  description: 'Resume the currently paused media.',
-  usage: 'resume'
+  name: 'pause',
+  description: 'Pause the current playing media.',
+  usage: 'pause'
 };
 
 exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
-    guild.ResumeMedia((msg) => message.reply(msg));
+    guild.PauseMedia((msg) => message.reply(msg));
   }
 };

@@ -1,6 +1,6 @@
 exports.Config = {
   enabled: true,
-  guildOnly: false,
+  default: false,
   aliases: []
 };
 
@@ -13,6 +13,6 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
-    message.reply(guild.GetQueueList());
+    message.reply(`\`\`\`${guild.GetQueueList()}\`\`\``);
   }
 };

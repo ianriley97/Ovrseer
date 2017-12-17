@@ -14,7 +14,7 @@ exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
     var member = message.member;
-    if(params.length == 0) guild.JoinVoiceChannel(member.voiceChannelID, (msg) => message.reply(msg));
+    if(params.length == 0) guild.JoinVoiceChannel(member.voiceChannelID, (msg) => message.reply(` you need to be in a voice channel.`));
     else guild.JoinVoiceChannel(params[0], (msg) => message.reply(msg));
   }
 };
