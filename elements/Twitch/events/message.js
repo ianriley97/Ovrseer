@@ -17,9 +17,9 @@ module.exports = (app, args) => { // args = [channel, userstate, message, self]
   objs.member = mem;
   var prefix = ch.CmdPrefix;
   var def = false;
-  if (!message.content.startsWith(prefix)) {
+  if (!message.startsWith(prefix)) {
     prefix = process.env.DEFAULT_CMD_PREFIX;
-    if (!message.content.startsWith(process.env.DEFAULT_CMD_PREFIX)) return;
+    if (!message.startsWith(prefix)) return;
     def = true;
   }
   let command = message.split(' ')[0].slice(prefix.length);

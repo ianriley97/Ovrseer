@@ -16,7 +16,7 @@ module.exports = (app, args) => { // args = [message]
   var def = false;
   if (!message.content.startsWith(prefix)) {
     prefix = process.env.DEFAULT_CMD_PREFIX;
-    if (!message.content.startsWith(process.env.DEFAULT_CMD_PREFIX)) return;
+    if (!message.content.startsWith(prefix)) return;
     def = true;
   }
   let command = message.content.split(' ')[0].slice(prefix.length);
