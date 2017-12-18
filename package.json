@@ -4,7 +4,7 @@
   "description": "",
   "main": "init.js",
   "scripts": {
-    "start": "npm rebuild && nodemon ."
+    "start": "npm rebuild && node ."
   },
   "author": "",
   "license": "ISC",

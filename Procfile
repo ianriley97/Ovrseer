@@ -1,1 +1,1 @@
-web: npm rebuild && node .
+web: npm start
