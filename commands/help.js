@@ -1,4 +1,5 @@
 const Commands = require('../collections/commands.js');
+const HelpMessage = require('../objects/helpmessage.js');
 
 exports.Config = {
   enabled: true,
@@ -16,28 +17,35 @@ exports.Run = {
   Discord: (message, params, objs) => {
     var app = objs.app;
     var guild = objs.guild;
-    message.channel.send(GetMessage(app, params, app.Identity));
+    GetMessage(app, params, app.Identity, (msg) => {
+      message.channel.send(`${msg}`);
+    }, '**');
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
     var channel = objs.channel;
-    app.Client.action(channel.Channel, GetMessage(app ,params, app.Identity));
+    GetMessage(app, params, app.Identity, (msg) => {
+      app.Client.action(channel.Channel, `${msg}`);
+    }, '');
   }
 }
 
-function GetMessage(app, params, group) {
-  var msg = '';
+function GetMessage(app, params, group, cb, styleText) {
+  var msg = new HelpMessage(styleText);
   if (!params[0]) {
     Commands.Commands.forEach(cmd => {
-      if(cmd.Run[group]) msg += (`**${cmd.Help.name}** :- ${cmd.Help.description}\n`);
+      if(cmd.Run[group]) {
+        if(cmd.Help.group) msg.AddToGroup(cmd.Help.group, `${styleText}${cmd.Help.name}${styleText} :- ${cmd.Help.description}`);
+        else msg.AddToOther(`${styleText}${cmd.Help.name}${styleText} :- ${cmd.Help.description}`);
+      }
     });
   }
   else {
     let cmd = params[0];
     cmd = app.GetCommand(cmd);
     if (cmd && cmd.Run[group]) {
-      msg += cmd.Help.name;
+      msg.AddToOther(`Command: ${styleText}${cmd.Help.name}${styleText}\n\tDescription: ${cmd.Help.description}\n\tUsage: ${cmd.Help.usage}${cmd.Config.aliases.length > 0 ? `\n\tAliases: ${cmd.Config.aliases}` : ``}`);
     }
   }
-  return msg;
+  cb(msg.GetMessage());
 }
