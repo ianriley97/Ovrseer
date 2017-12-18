@@ -4,13 +4,12 @@ const Command = require('../objects/command.js');
 class Commands {
   constructor() {
     this.Commands = new Map();
+    this.Groups = [];
   }
-  Keys() {
-    return this.Commands.keys();
-  }
-  GetCommand(name) {
+  GetCommand(name, group) {
+    if(!group) group = 'Commands';
     var foundCmd;
-    this.Commands.forEach((value, key, thisMap) => {
+    this[group].forEach((value, key, thisMap) => {
       if(key == name || HasAlias(value, name)) {
         foundCmd = value;
         return;
@@ -18,10 +17,17 @@ class Commands {
     });
     return foundCmd;
   }
-  AddCommand(name, command) {
-    var cmd = this.Commands.set(name, new Command(command));
+  AddCommand(name, command, group) {
+    if(!group) group = 'Commands';
+    var cmd = this[group].set(name, new Command(command));
     Log.command('Loading command: ' + name + '...');
     return cmd;
+  }
+  AddGroup(group) {
+    this.Groups.push(group);
+  }
+  IsGroup(name) {
+    return this.Groups.includes(name);
   }
 }
 

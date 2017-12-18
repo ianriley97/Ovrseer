@@ -8,8 +8,8 @@ class Client {
     this.Identity = id;
     this.Index = index;
   }
-  GetCommand(name) {
-    return Commands.GetCommand(name);
+  GetCommand(name, group) {
+    return Commands.GetCommand(name, group);
   };
   GetGroup(id) {
     return Groups.GetGroup(this.Index, id);
@@ -23,6 +23,9 @@ class Client {
     var g = Groups.RemoveGroup(this.Index, id);
     Log[this.Identity](`${g.Identity}, "${g.Name}", has been removed from Groups.`);
     return g;
+  };
+  IsCommandGroup(name) {
+    return Commands.IsGroup(name);
   };
 }
 

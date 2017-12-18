@@ -13,6 +13,6 @@ exports.Help = {
 exports.Run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
-    message.reply(`\`\`\`${guild.GetQueueList()}\`\`\``);
+    message.channel.send(`\`\`\`${guild.GetQueueList()}\`\`\``);
   }
 };

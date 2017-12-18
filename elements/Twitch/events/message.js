@@ -24,7 +24,14 @@ module.exports = (app, args) => { // args = [channel, userstate, message, self]
   }
   let command = message.split(' ')[0].slice(prefix.length);
   let params = message.split(' ').slice(1);
-  let cmd = app.GetCommand(command);
+  var cmdGroup;
+  if(app.IsCommandGroup(command)) {
+    console.log(message.content);
+    cmdGroup = command;
+    command = params[0];
+    params = params.slice(1);
+  }
+  let cmd = app.GetCommand(command, cmdGroup);
   if (def && !cmd.Config.default) return;
   if (cmd && cmd.Run.Twitch) cmd.Run.Twitch(message, params, objs); // objs = { app, channel, member }
 };

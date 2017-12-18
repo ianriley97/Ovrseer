@@ -21,7 +21,13 @@ module.exports = (app, args) => { // args = [message]
   }
   let command = message.content.split(' ')[0].slice(prefix.length);
   let params = message.content.split(' ').slice(1);
-  let cmd = app.GetCommand(command);
+  var cmdGroup;
+  if(app.IsCommandGroup(command)) {
+    cmdGroup = command;
+    command = params[0];
+    params = params.slice(1);
+  }
+  let cmd = app.GetCommand(command, cmdGroup);
   if (def && !cmd.Config.default) return;
   if (cmd && cmd.Run.Discord) cmd.Run.Discord(message, params, objs); // objs = { app, guild, member }
 };

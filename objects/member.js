@@ -1,6 +1,7 @@
 const ExpGainRate = Number.parseInt(process.env.EXP_GAIN_RATE);
 const ExpGainTimeFrame = Number.parseInt(process.env.EXP_GAIN_TIME_FRAME);
 const ExpPerRank = Number.parseInt(process.env.EXP_PER_RANK);
+
 class Member {
   constructor(member) {
     this.Object = member;
@@ -9,6 +10,7 @@ class Member {
     this.Level = 1;
     this.CurLvlMaxExp = ExpPerRank;
     this.LastEligibleExpGainTime = 0;
+    this.TwitchAccount;
   };
   UpdateMember(member) {
     this.Object = member;
