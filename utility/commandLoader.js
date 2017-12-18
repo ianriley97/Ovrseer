@@ -9,13 +9,13 @@ module.exports = () => {
     dirs.forEach(d => {
       if(fs.statSync(`${cmdPath}${d}`).isDirectory()) {
         Commands[d] = new Map();
+        Commands.AddGroup(d);
         var dirPath = `${cmdPath}${d}/`;
         fs.readdir((dirPath), (err, files) => {
           if (err) console.error(err);
           files.forEach(f => {
             let cmd = require(`${dirPath}${f}`);
             cmd.Help.group = d;
-            Commands.AddGroup(d);
             Commands.AddCommand(cmd.Help.name, cmd, d);
           });
         });

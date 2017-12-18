@@ -1,5 +1,4 @@
 const Commands = require('../collections/commands.js');
-const HelpMessage = require('../objects/helpmessage.js');
 
 exports.Config = {
   enabled: true,
@@ -17,35 +16,48 @@ exports.Run = {
   Discord: (message, params, objs) => {
     var app = objs.app;
     var guild = objs.guild;
-    GetMessage(app, params, app.Identity, (msg) => {
+    GetMessage(app, params, app.Identity, '**', (msg) => {
       message.channel.send(`${msg}`);
-    }, '**');
+    });
   },
   Twitch: (message, params, objs) => {
     var app = objs.app;
     var channel = objs.channel;
-    GetMessage(app, params, app.Identity, (msg) => {
+    GetMessage(app, params, app.Identity, '', (msg) => {
       app.Client.action(channel.Channel, `${msg}`);
-    }, '');
+    });
   }
 }
 
-function GetMessage(app, params, group, cb, styleText) {
-  var msg = new HelpMessage(styleText);
+function GetMessage(app, params, group, styleText, cb) {
+  var msg = '';
+  var msgCount = 0;
   if (!params[0]) {
-    Commands.Commands.forEach(cmd => {
-      if(cmd.Run[group]) {
-        if(cmd.Help.group) msg.AddToGroup(cmd.Help.group, `${styleText}${cmd.Help.name}${styleText} :- ${cmd.Help.description}`);
-        else msg.AddToOther(`${styleText}${cmd.Help.name}${styleText} :- ${cmd.Help.description}`);
-      }
+    Commands.Groups.forEach((g) => {
+      msg += (`${styleText}- ${g} -${styleText}\n`);
+      msgCount = msg.length;
+      Commands[g].forEach((cmd) => {
+        if(cmd.Run[group]) msg += (`\t${styleText}${cmd.Help.name}${styleText} :- ${cmd.Help.description}\n`);
+      });
+      msg += '\n';
+      if(msg.length > msgCount) msg.replace(`${g}\n\n`, '');
+    });
+    Commands.Commands.forEach((cmd) => {
+      if(cmd.Run[group]) msg += (`${styleText}${cmd.Help.name}${styleText} :- ${cmd.Help.description}\n`);
     });
   }
   else {
-    let cmd = params[0];
-    cmd = app.GetCommand(cmd);
+    let command = params[0];
+    var cmdGroup;
+    if(Commands.IsGroup(command)) {
+      cmdGroup = command;
+      params = params.slice(1);
+      command = params[0];
+    }
+    let cmd = app.GetCommand(command, cmdGroup);
     if (cmd && cmd.Run[group]) {
-      msg.AddToOther(`Command: ${styleText}${cmd.Help.name}${styleText}\n\tDescription: ${cmd.Help.description}\n\tUsage: ${cmd.Help.usage}${cmd.Config.aliases.length > 0 ? `\n\tAliases: ${cmd.Config.aliases}` : ``}`);
+      msg += (`Command: ${styleText}${cmd.Help.name}${styleText}\n\tDescription: ${cmd.Help.description}\n\tUsage: ${cmd.Help.usage}${cmd.Config.aliases.length > 0 ? `\n\tAliases: ${cmd.Config.aliases}` : ``}`);
     }
   }
-  cb(msg.GetMessage());
+  cb(msg.trim());
 }
