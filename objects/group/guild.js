@@ -1,5 +1,5 @@
-const Group = require('./inheritance/group.js');
-const MediaManager = require('./media/mediaManager.js');
+const Group = require('./group.js');
+const MediaManager = require('../media/mediaManager.js');
 
 class Guild extends Group {
   constructor(guild) {

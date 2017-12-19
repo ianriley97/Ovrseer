@@ -1,4 +1,4 @@
-const Log = require('../../../utility/logger.js');
+const Log = require('../../../../utility/logger.js');
 
 module.exports = (app) => {
   var defPrefix = process.env.DEFAULT_CMD_PREFIX;

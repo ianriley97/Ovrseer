@@ -1,7 +1,7 @@
-const Collection = require('../objects/collection.js');
+const Collection = require('../collection.js');
 
-const Guild = require('../objects/guild.js');
-const Channel = require('../objects/channel.js');
+const Guild = require('./guild.js');
+const Channel = require('./channel.js');
 
 class Groups {
   constructor() {

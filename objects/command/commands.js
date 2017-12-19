@@ -1,5 +1,5 @@
-const Log = require('../utility/logger.js')
-const Command = require('../objects/command.js');
+const Log = require('../../utility/logger.js')
+const Command = require('./command.js');
 
 class Commands {
   constructor() {

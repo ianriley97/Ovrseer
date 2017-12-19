@@ -1,4 +1,4 @@
-const Commands = require('../collections/commands.js');
+const Commands = require('../objects/command/commands.js');
 
 module.exports = () => {
   const fs = require('fs');

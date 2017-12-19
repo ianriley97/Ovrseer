@@ -1,7 +1,7 @@
 const Log = require('../../utility/logger.js')
 
-const Commands = require('../../collections/commands.js');
-const Groups = require('../../collections/groups.js');
+const Commands = require('../command/commands.js');
+const Groups = require('../group/groups.js');
 
 class Client {
   constructor(id, index) {

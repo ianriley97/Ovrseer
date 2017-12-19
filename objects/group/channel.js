@@ -1,4 +1,4 @@
-const Group = require('./inheritance/group.js');
+const Group = require('./group.js');
 
 class Channel extends Group {
   constructor(channel) {

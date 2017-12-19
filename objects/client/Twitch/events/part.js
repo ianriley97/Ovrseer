@@ -1,4 +1,4 @@
-const Log = require('../../../utility/logger.js');
+const Log = require('../../../../utility/logger.js');
 
 module.exports = (app, args) => { // args = [channel, username, self]
   var channel = args[0];
