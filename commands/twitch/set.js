@@ -1,4 +1,5 @@
 const Twitch = require('../../app.js').TwitchApp;
+const TwitchChannels = require('../../objects/twitchChannels.js');
 
 exports.Config = {
   enabled: true,
@@ -20,7 +21,8 @@ exports.Run = {
     params = params.join(' ');
     Twitch.Client.join(params).then((data) => {
       member.TwitchAccount = data;
-      message.reply(`${app.Client.user.username} was successful in joining Twitch channel, ${data}.`);
+      TwitchChannels.AddChannel(data);
+      message.reply(`${app.Client.user.username} was successful in joining Twitch channel, **${data}**.`);
     }).catch((err) => {
       console.log(err);
       message.reply(`${app.Client.user.username} was unable to join Twitch channel, ${params}.`);
