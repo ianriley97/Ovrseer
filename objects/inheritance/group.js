@@ -23,8 +23,6 @@ class Group {
   };
   AddMember(id, member) {
     var m = this.Members.Add(id, new Member(member));
-    console.log(id);
-    console.log(m);
     Log[this.Identity](`Member, "${m.Object.username}", has joined ${this.Identity}, "${this.Name}".`);
     return m;
   };
