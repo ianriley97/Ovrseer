@@ -1,8 +1,6 @@
-const Member = require('./member.js');
-
-class DiscordMember extends Member {
+class DiscordMember {
   constructor(member) {
-    super(member);
+    this.Object = member;
   }
   GetName() {
     return this.Object.username;

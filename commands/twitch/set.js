@@ -20,7 +20,7 @@ exports.Run = {
     var member = objs.member;
     params = params.join(' ');
     Twitch.Client.join(params).then((data) => {
-      member.TwitchAccount = data;
+      member.SetTwitchAccount(data);
       TwitchChannels.AddChannel(data);
       message.reply(`${app.Client.user.username} was successful in joining Twitch channel, **${data}**.`);
     }).catch((err) => {

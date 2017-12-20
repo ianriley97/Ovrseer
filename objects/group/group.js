@@ -1,6 +1,7 @@
 const Log = require('../../utility/logger.js')
 
-const Collection = require('../collection.js');
+const Members = require('../member/members.js');
+
 const Member = require('../member/member.js');
 
 class Group {
@@ -9,7 +10,7 @@ class Group {
     this.Name = name;
     this.Identity = identity;
     this.CmdPrefix = process.env.DEFAULT_CMD_PREFIX;
-    this.Members = new Collection();
+    this.Members = new (require('../collection.js'))();
   };
   UpdateObject(object) {
     this.Object = object;

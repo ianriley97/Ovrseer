@@ -17,7 +17,7 @@ class Groups {
     return g;
   };
   AddGroup(index, id, group) {
-    var g = this.Groups[index].Add(id, new (this.Objects[index])(group));
+    var g = this.Groups[index].Add(id, new (this.Objects[index])(group, index));
     return g;
   };
   RemoveGroup(index, id) {

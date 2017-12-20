@@ -1,8 +1,6 @@
-const Member = require('./member.js');
-
-class TwitchMember extends Member {
+class TwitchMember {
   constructor(member) {
-    super(member);
+    this.Object = member;
   }
   GetName() {
     return this.Object.username;
