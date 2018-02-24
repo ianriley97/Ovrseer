@@ -1,4 +1,3 @@
-const Log = require('../../utility/logger.js')
 const Command = require('./command.js');
 
 class Commands {

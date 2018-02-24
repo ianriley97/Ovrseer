@@ -1,3 +1,4 @@
+global.Log = require('./utility/logger.js');
 require('dotenv').config();
 /*
   ".env" file data items needed:
@@ -11,11 +12,11 @@ require('dotenv').config();
   GOOGLE_KEY=[key for validating youtube functionality]
   TWITCH_KEY=[oauth token for twitch bot's channel]
   TWITCH_BOT_NAME=[username of twitch bot's account]
-  TWITCH_CHANNELS=[channels for bot to join]
+  TWITCH_CHANNELS=[channels for bot to join at startup]
 */
 require('./server/server.js');
-require('./utility/commandLoader.js')();
-module.exports = {
-  DiscordApp: new (require('./objects/client/Discord/client.js'))(),
-  TwitchApp: new (require('./objects/client/Twitch/client.js'))()
-}
+// require('./utility/commandLoader.js')();
+// module.exports = {
+  // DiscordApp: new (require('./objects/client/Discord/client.js'))(),
+  // TwitchApp: new (require('./objects/client/Twitch/client.js'))()
+// }

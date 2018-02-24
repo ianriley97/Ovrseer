@@ -14,5 +14,4 @@ module.exports = {
   Discord: (msg) => LogStyle(chalk.cyan, msg),
   Guild: (msg) => LogStyle(chalk.cyan, msg),
   Twitch: (msg) => LogStyle(chalk.magenta, msg),
-  Channel: (msg) => LogStyle(chalk.magenta, msg)
 };
