@@ -1,15 +1,15 @@
-exports.Config = {
+exports.config = {
   enabled: true,
   aliases: []
 };
 
-exports.Help = {
+exports.help = {
   name: 'roll',
   description: 'Rolls a number between 0 and <max> (default 6) or between <min> and <max>. (up to 1,000,000)',
   usage: 'roll , roll <max> , roll <min> <max>'
 };
 
-exports.Run = {
+exports.run = {
   Discord: (message, params, objs) => {
     var nums = GenerateNumbers(params);
     if(nums) message.reply(` rolled **${nums.val}**`);

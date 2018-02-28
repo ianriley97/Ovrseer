@@ -1,15 +1,15 @@
-exports.Config = {
+exports.config = {
   enabled: true,
   aliases: []
 };
 
-exports.Help = {
+exports.help = {
   name: 'flip',
   description: 'Flips a coin for Heads or Tails.',
   usage: 'flip'
 };
 
-exports.Run = {
+exports.run = {
   Discord: (message, params, objs) => {
     message.delete();
     if(params.length == 0) {

@@ -1,15 +1,15 @@
-exports.Config = {
+exports.config = {
   enabled: true,
   aliases: []
 };
 
-exports.Help = {
+exports.help = {
   name: 'prefix',
   description: 'Displays or changes the current prefix.',
   usage: 'prefix , prefix <newprefix>'
 };
 
-exports.Run = {
+exports.run = {
   Discord: (message, params, objs) => {
     var guild = objs.guild;
     message.reply(GetStateStr(guild, params) + "**" + guild.CmdPrefix + "**");
