@@ -1,6 +1,5 @@
 exports.Config = {
-  enabled: true,
-  default: false,
+  enabled: false,
   aliases: []
 };
 

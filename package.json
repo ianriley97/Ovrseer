@@ -2,7 +2,7 @@
   "name": "ovrseer",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "bot.js",
   "scripts": {
     "start": "npm rebuild && node ."
   },
@@ -14,11 +14,9 @@
     "dotenv": "^4.0.0",
     "ffmpeg": "0.0.4",
     "ffmpeg-binaries": "^3.2.2",
-    "file-system": "^2.2.2",
     "moment": "^2.20.1",
     "node-opus": "^0.2.7",
     "opusscript": "0.0.4",
-    "path": "^0.12.7",
     "request": "^2.83.0",
     "tmi.js": "^1.2.1",
     "ytdl-core": "^0.18.7"
