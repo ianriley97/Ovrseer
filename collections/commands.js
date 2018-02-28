@@ -10,7 +10,8 @@ class Commands {
     var cmdPath = Path.join(__dirname, '..', 'commands');
     readDirectory(cmdPath);
   }
-  add(cmd) {
+  add(cmd, group) {
+    if(group) cmd.help.group = group;
     var cmdGroup = cmd.help.group;
     var groupIndex = this.Groups.get(cmdGroup);
     if(!groupIndex) {
@@ -37,15 +38,15 @@ class Commands {
 const CommandsList = new Commands();
 module.exports = CommandsList;
 
-function readDirectory(dirPath) {
+function readDirectory(dirPath, group) {
   FileSystem.readdir(dirPath, function(err, files) {
     if(err) console.error(err);
     else {
       files.forEach(function(file) {
         var filePath = Path.join(dirPath, file);
-        if(FileSystem.statSync(filePath).isDirectory()) readDirectory(filePath);
+        if(FileSystem.statSync(filePath).isDirectory()) readDirectory(filePath, file);
         var cmd = require(filePath);
-        CommandsList.add(cmd);
+        CommandsList.add(cmd, group);
       });
     }
   });
