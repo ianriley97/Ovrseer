@@ -5,9 +5,9 @@ const Default = (style, msg) => console.log(style(TimeStamp + " " + msg));
 var LogStyle = Default;
 
 const TimeStamp = "[" + moment().format('YYYY-MM-DD HH:mm:ss') + "]";
-module.exports = function(msg, type) {
-  var log = function(msg) { LogStyle(chalk, msg); }
-  if(type) log = logTypes[type];
+module.exports = function(type, msg) {
+  var log = logTypes[type];
+  if(!log) log = function(msg) { LogStyle(chalk, msg); }
   log(msg);
 };
 

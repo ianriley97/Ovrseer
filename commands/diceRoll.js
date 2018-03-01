@@ -1,6 +1,7 @@
 exports.config = {
   enabled: true,
-  aliases: []
+  aliases: [],
+  default: false
 };
 
 exports.help = {
@@ -10,20 +11,13 @@ exports.help = {
 };
 
 exports.run = {
-  Discord: (message, params, objs) => {
-    var nums = GenerateNumbers(params);
+  discord: function(message, params, objs) {
+    var nums = generateNumbers(params);
     if(nums) message.reply(` rolled **${nums.val}**`);
-  },
-  Twitch: (message, params, objs) => {
-    var app = objs.app;
-    var channel = objs.channel;
-    var member = objs.member;
-    var nums = GenerateNumbers(params);
-    if(nums) app.Client.action(channel.Object, `${member.Object['display-name']} rolled ${nums.val}`);
   }
-}
+};
 
-function GenerateNumbers(params) {
+function generateNumbers(params) {
   var lowNum = 1, highNum = 6;
   if(params.length > 0) {
     if(!allNumbers(params) || greaterThanAllowed(params)) return;

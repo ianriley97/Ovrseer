@@ -1,6 +1,7 @@
 exports.config = {
   enabled: true,
-  aliases: []
+  aliases: [],
+  default: false
 };
 
 exports.help = {
@@ -10,7 +11,7 @@ exports.help = {
 };
 
 exports.run = {
-  Discord: (message, params, objs) => {
+  discord: function(message, params, objs) {
     message.delete();
     if(params.length == 0) {
       const CoinSide = ['Heads', 'Tails'];
@@ -18,4 +19,4 @@ exports.run = {
       message.reply(" landed on **" + CoinSide[side] + "**");
     }
   }
-}
+};

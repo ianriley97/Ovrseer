@@ -22,7 +22,9 @@ class Commands {
       }
       else groupIndex = 0;
     }
-    this.Commands[groupIndex].set(cmd.help.name, new Command(cmd.config, cmd.help, cmd.run));
+    var cmdName = cmd.help.name;
+    this.Commands[groupIndex].set(cmdName, new Command(cmd.config, cmd.help, cmd.run));
+    Log('command', `Command Loaded: ${(group) ? `${group} - ${cmdName}` : `${cmdName}`}`);
   }
   get(cmdName, groupName) {
     var groupIndex = this.Groups.get(groupName);

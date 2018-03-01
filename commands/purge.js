@@ -1,6 +1,7 @@
 exports.config = {
   enabled: false,
-  aliases: []
+  aliases: [],
+  default: false
 };
 
 exports.help = {
@@ -10,7 +11,7 @@ exports.help = {
 };
 
 exports.run = {
-  Discord: (message, params, objs) => {
+  discord: function(message, params, objs) {
     let messagecount = parseInt(params.join(' '));
     message.channel.fetchMessages({
       limit: messagecount
