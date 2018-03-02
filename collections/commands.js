@@ -31,9 +31,9 @@ class Commands {
     if(!groupIndex) groupIndex = 0;
     return this.Commands[groupIndex].get(cmdName);
   }
-  run(params, cmdName, groupName) {
+  run(clientName, params, cmdName, groupName) {
     var cmd = this.get(cmdName, groupName);
-    if(cmd && cmd.config.enabled) cmd.run(params);
+    if(cmd && cmd.config.enabled && cmd.run[clientName]) cmd.run[clientName](params);
   }
 }
 
@@ -57,7 +57,7 @@ function readDirectory(dirPath, group) {
 class Command {
   constructor(config, help, run) {
     this.config = config;
-    this.help = config;
+    this.help = help;
     this.run = run;
   }
 }
