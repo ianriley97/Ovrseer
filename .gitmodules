@@ -1,0 +1,3 @@
+[submodule "simple-server"]
+	path = simple-server
+	url = git@github.com:daytonltaylor/simple-server.git
