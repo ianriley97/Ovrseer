@@ -1,0 +1,19 @@
+{
+  "name": "simple-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daytonltaylor/simple-server.git"
+  },
+  "author": "Dayton Taylor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daytonltaylor/simple-server/issues"
+  },
+  "homepage": "https://github.com/daytonltaylor/simple-server#readme"
+}
