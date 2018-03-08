@@ -56,7 +56,9 @@ function setRequestPath(req) {
 
 function handleRequest(req, res) {
   console.log(req.headers.host);
-  var readPath = setRequestPath(req);
+  // var readPath = setRequestPath(req);
+  var readPath = Path.join(req.headers.host, DefRootDir, req.url);
+  console.log(readPath);
   if(readPath) {
     FileSystem.stat(readPath, function(err, stats) {
       if(err) serveError(res, err, 404, 'File Not Found');
