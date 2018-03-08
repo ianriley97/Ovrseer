@@ -6,19 +6,27 @@
   "scripts": {
     "start": "npm rebuild && node ."
   },
-  "author": "",
+  "author": "Dayton Taylor",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.3.1",
-    "discord.js": "^11.3.0",
+    "chalk": "2.3.2",
+    "discord.js": "11.3.2",
     "dotenv": "^4.0.0",
     "ffmpeg": "0.0.4",
     "ffmpeg-binaries": "^3.2.2",
-    "moment": "^2.20.1",
-    "node-opus": "^0.2.7",
+    "moment": "2.21.0",
     "opusscript": "0.0.4",
+    "pg": "7.4.1",
     "request": "^2.83.0",
-    "tmi.js": "^1.2.1",
     "ytdl-core": "^0.18.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daytonltaylor/Ovrseer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daytonltaylor/Ovrseer/issues"
+  },
+  "homepage": "https://github.com/daytonltaylor/Ovrseer#readme"
 }
