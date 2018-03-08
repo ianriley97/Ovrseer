@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 const DefRootDir = 'public';
 const DefaultPage = 'index.html';
-const SubDomains = require('.' + Path.sep + 'subdomains.json');
+const SubDomains = require(Path.join(__dirname, 'subdomains.json'));
 
 function serveError(res, err, resCode, resMsg) {
   console.error(err);
@@ -49,12 +49,12 @@ function setRequestPath(req) {
   var subdomain = req.headers.host.split('.');
   var path;
   if(subdomain.length > 1) path = SubDomains[subdomain[0]];
-  else path = Path.join(DefRootDir, req.url);
-  return path;
+  else path = DefRootDir;
+  return Path.join(__dirname, path, req.url);
 }
 
 function handleRequest(req, res) {
-  var readPath = setRequestPath(req);;
+  var readPath = setRequestPath(req);
   if(readPath) {
     FileSystem.stat(readPath, function(err, stats) {
       if(err) serveError(res, err, 404, 'File Not Found');
@@ -70,5 +70,5 @@ function handleRequest(req, res) {
 
 var server = HTTP.createServer(handleRequest);
 server.listen(PORT, function() {
-  console.log("Listening at port ", PORT);
+  Log('server', "Server listening on port " + PORT);
 });

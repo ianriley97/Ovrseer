@@ -12,10 +12,9 @@ module.exports = function(type, msg) {
 };
 
 var logTypes = {
+  server: function(msg) { LogStyle(chalk, msg) },
+  command: function(msg) { LogStyle(chalk.yellow, msg) },
   ready: function(msg) { LogStyle(chalk.green, msg) },
   disconnected: function(msg) { LogStyle(chalk.red, msg) },
-  reconnecting: function(msg) { LogStyle(chalk.yellow, msg) },
-  command: function(msg) { LogStyle(chalk.yellow, msg) },
-  discord: function(msg) { LogStyle(chalk.cyan, msg) },
-  twitch: function(msg) { LogStyle(chalk.magenta, msg) }
+  reconnecting: function(msg) { LogStyle(chalk.yellow, msg) }
 };

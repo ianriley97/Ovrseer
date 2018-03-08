@@ -4,6 +4,6 @@ require('dotenv').config();
 // Set global local modules
 global.Log = require(Path.join(__dirname, 'utility', 'logger.js'));
 // Initialize necessary objects for bot use
+require(Path.join(__dirname, 'server', 'server.js'));
 require(Path.join(__dirname, 'collections', 'commands.js'));
 require(Path.join(__dirname, 'objects', 'discord', 'discord.js'));
-require(Path.join(__dirname, 'server', 'server.js'));
