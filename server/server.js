@@ -48,9 +48,9 @@ function serveFile(res, path, readPath) {
 function setRequestPath(req) {
   var subdomain = req.headers.host.split('.');
   var path;
-  console.log(path);
   if(subdomain.length > 1) path = SubDomains[subdomain[0]];
   else path = DefRootDir;
+  console.log(path);
   return Path.join(__dirname, path, req.url);
 }
 
