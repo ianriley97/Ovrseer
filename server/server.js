@@ -54,25 +54,21 @@ function setRequestPath(req) {
 }
 
 function handleRequest(req, res) {
-  res.end('Hello from Ovrseer!');
-  // var readPath = setRequestPath(req);
-  // if(readPath) {
-  //   FileSystem.stat(readPath, function(err, stats) {
-  //     if(err) serveError(res, err, 404, 'File Not Found');
-  //     else if(stats.isDirectory()) serveDirectory(res, req.url, readPath);
-  //     else serveFile(res, req.url, readPath);
-  //   });
-  // }
-  // else {
-  //   res.statusCode = 404;
-  //   res.end('Subdomain Not Found');
-  // }
+  var readPath = setRequestPath(req);
+  if(readPath) {
+    FileSystem.stat(readPath, function(err, stats) {
+      if(err) serveError(res, err, 404, 'File Not Found');
+      else if(stats.isDirectory()) serveDirectory(res, req.url, readPath);
+      else serveFile(res, req.url, readPath);
+    });
+  }
+  else {
+    res.statusCode = 404;
+    res.end('Subdomain Not Found');
+  }
 }
 
-var pk = fs.readFileSync('privatekey.pem');
-var pc = fs.readFileSync('certificate.pem');
-var opts = { key: pk, cert: pc };
-var server = HTTP.createServer(opts, handleRequest);
+var server = HTTP.createServer(handleRequest);
 server.listen(PORT, function() {
   Log('server', "Server listening on port " + PORT);
 });
