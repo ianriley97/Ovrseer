@@ -48,14 +48,15 @@ function serveFile(res, path, readPath) {
 function setRequestPath(req) {
   var subdomain = req.headers.host.split('.');
   var path;
+  console.log(path);
   if(subdomain.length > 1) path = SubDomains[subdomain[0]];
   else path = DefRootDir;
   return Path.join(__dirname, path, req.url);
 }
 
 function handleRequest(req, res) {
+  console.log(req.headers.host);
   var readPath = setRequestPath(req);
-  console.log(readPath);
   if(readPath) {
     FileSystem.stat(readPath, function(err, stats) {
       if(err) serveError(res, err, 404, 'File Not Found');
