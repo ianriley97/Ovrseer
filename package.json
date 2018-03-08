@@ -7,7 +7,7 @@
     "start": "npm rebuild && node ."
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^2.3.1",
     "discord.js": "^11.3.0",
