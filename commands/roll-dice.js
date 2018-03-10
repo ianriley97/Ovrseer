@@ -1,7 +1,7 @@
 exports.config = {
   enabled: true,
   aliases: [],
-  default: false
+  permLvl: 0
 };
 
 exports.help = {
@@ -11,7 +11,7 @@ exports.help = {
 };
 
 exports.run = {
-  discord: function(message, params, objs) {
+  discord: function(params) {
     var nums = generateNumbers(params);
     if(nums) message.reply(` rolled **${nums.val}**`);
   }

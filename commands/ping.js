@@ -1,7 +1,7 @@
 exports.config = {
   enabled: true,
   aliases: [],
-  default: true
+  permLvl: 0
 };
 
 exports.help = {
@@ -11,7 +11,7 @@ exports.help = {
 };
 
 exports.run = {
-  discord: function(message, params, objs) {
+  discord: function(params) {
     message.channel.send('Ping?').then(msg => {
       msg.edit(`Pong! (${msg.createdTimestamp - message.createdTimestamp}ms)`);
     });

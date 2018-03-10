@@ -26,14 +26,11 @@ class Commands {
     this.Commands[groupIndex].set(cmdName, new Command(cmd.config, cmd.help, cmd.run));
     Log('command', `Command Loaded: ${(group) ? `${group} - ${cmdName}` : `${cmdName}`}`);
   }
-  get(cmdName, groupName) {
-    var groupIndex = this.Groups.get(groupName);
+  get(cmdName, cmdGroup) {
+    var groupIndex = this.Groups.get(cmdGroup);
     if(!groupIndex) groupIndex = 0;
-    return this.Commands[groupIndex].get(cmdName);
-  }
-  run(clientName, params, cmdName, groupName) {
-    var cmd = this.get(cmdName, groupName);
-    if(cmd && cmd.config.enabled && cmd.run[clientName]) cmd.run[clientName](params);
+    var cmd = this.Commands[groupIndex].get(cmdName);
+    return cmd;
   }
 }
 
