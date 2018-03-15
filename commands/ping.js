@@ -12,7 +12,8 @@ exports.help = {
 
 exports.run = {
   discord: function(params) {
-    message.channel.send('Ping?').then(msg => {
+    var message = params['message'];
+    message.channel.send('Ping?').then(function(msg) {
       msg.edit(`Pong! (${msg.createdTimestamp - message.createdTimestamp}ms)`);
     });
   }

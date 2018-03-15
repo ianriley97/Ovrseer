@@ -1,14 +1,10 @@
-const FileSystem = require('fs');
-const Path = require('path');
-
 var groupCount = 0;
 
 class Commands {
-  constructor() {
+  constructor(cmdFolderPath) {
     this.Groups = new Map();
     this.Commands = [new Map()];
-    var cmdPath = Path.join(__dirname, '..', 'commands');
-    readDirectory(cmdPath);
+    readDirectory(this, cmdFolderPath);
   }
   add(cmd, group) {
     if(group) cmd.help.group = group;
@@ -32,20 +28,26 @@ class Commands {
     var cmd = this.Commands[groupIndex].get(cmdName);
     return cmd;
   }
+  checkGroup(group) {
+    return this.Groups.has(group);
+  }
 }
 
-const CommandsList = new Commands();
-module.exports = CommandsList;
+module.exports = Commands;
 
-function readDirectory(dirPath, group) {
+function readDirectory(listObj, dirPath, group) {
+  const FileSystem = require('fs');
+  const Path = require('path');
   FileSystem.readdir(dirPath, function(err, files) {
     if(err) console.error(err);
     else {
       files.forEach(function(file) {
         var filePath = Path.join(dirPath, file);
-        if(FileSystem.statSync(filePath).isDirectory()) readDirectory(filePath, file);
-        var cmd = require(filePath);
-        CommandsList.add(cmd, group);
+        if(FileSystem.statSync(filePath).isDirectory()) readDirectory(listObj, filePath, file);
+        else {
+          var cmd = require(filePath);
+          listObj.add(cmd, group);
+        }
       });
     }
   });
