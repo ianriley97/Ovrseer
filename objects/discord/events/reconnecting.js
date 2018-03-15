@@ -1,4 +1,4 @@
 module.exports = function(app) {
   var client = app.Client;
-  Log('reconnecting', client.user.tag + ' attempting to reconnect...');
+  console.log(client.user.tag + ' attempting to reconnect...');
 };

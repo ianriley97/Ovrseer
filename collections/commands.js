@@ -20,7 +20,7 @@ class Commands {
     }
     var cmdName = cmd.help.name;
     this.Commands[groupIndex].set(cmdName, new Command(cmd.config, cmd.help, cmd.run));
-    Log('command', `Command Loaded: ${(group) ? `${group} - ${cmdName}` : `${cmdName}`}`);
+    console.log(`Command Loaded: ${(group) ? `${group} - ${cmdName}` : `${cmdName}`}`);
   }
   get(cmdName, cmdGroup) {
     var groupIndex = this.Groups.get(cmdGroup);
