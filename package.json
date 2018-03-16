@@ -1,32 +1,25 @@
 {
-  "name": "ovrseer",
+  "name": "ovrseer-server",
   "version": "1.0.0",
   "description": "",
-  "main": "bot.js",
+  "main": "server.js",
   "scripts": {
-    "start": "npm rebuild && node ."
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
-  "author": "Dayton Taylor",
-  "license": "MIT",
-  "dependencies": {
-    "chalk": "2.3.2",
-    "discord.js": "11.3.2",
-    "dotenv": "^4.0.0",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "^3.2.2",
-    "moment": "2.21.0",
-    "opusscript": "0.0.4",
-    "pg": "7.4.1",
-    "request": "^2.85.0",
-    "ytdl-core": "^0.18.7"
-  },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/daytonltaylor/Ovrseer.git"
   },
+  "author": "Dayton Taylor",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/daytonltaylor/Ovrseer/issues"
   },
-  "homepage": "https://github.com/daytonltaylor/Ovrseer#readme"
+  "homepage": "https://github.com/daytonltaylor/Ovrseer#readme",
+  "dependencies": {
+    "dotenv": "5.0.1",
+    "http": "0.0.0",
+    "moment": "2.21.0"
+  }
 }

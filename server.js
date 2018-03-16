@@ -2,8 +2,6 @@
 const HTTP = require('http');
 const FileSystem = require('fs');
 const Path = require('path');
-// Controllers
-const PageRenderer = require(Path.join(__dirname, 'controllers', 'page-renderer.js'));
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,7 +12,7 @@ function serveError(res, err, resCode, resMsg) {
 }
 
 function handleRequest(req, res) {
-  
+  res.end('Ovrseer says "Hello World!"');
 }
 
 var server = HTTP.createServer(handleRequest);
