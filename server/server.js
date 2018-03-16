@@ -14,10 +14,7 @@ function serveError(res, err, resCode, resMsg) {
 }
 
 function handleRequest(req, res) {
-  PageRenderer.render('home', function(err, data) {
-    if(err) serveError(res, err, 500, 'Server Error');
-    else res.end(data);
-  });
+  
 }
 
 var server = HTTP.createServer(handleRequest);
