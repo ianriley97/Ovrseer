@@ -4,7 +4,7 @@ const HTTP = require('http');
 require('dotenv').config();
 // Start server to attach running port and redirect to server url
 var server = HTTP.createServer(function(req, res) {
-  res.writeHead(301, {Location: process.env.SERVER_REDIRECT_URL});
+  res.writeHead(301, {Location: 'https://ovrseer.herokuapp.com'});
   res.end();
 });
 const PORT = process.env.PORT || 3000;

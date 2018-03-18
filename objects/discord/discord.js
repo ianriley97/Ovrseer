@@ -4,7 +4,7 @@ class DiscordApp {
   constructor(commandList) {
     const Path = require('path');
     this.Commands = commandList;
-    this.Client = new DiscordJS.Client({owner:[process.env.DISCORD_OWNER_ID]});
+    this.Client = new DiscordJS.Client({owner:[234921929188966401]});
     require(Path.join(__dirname, '..', '..', 'utility', 'event-loader.js'))(this, __dirname);
     this.Client.login(process.env.DISCORD_BOT_TOKEN);
   }
@@ -18,14 +18,14 @@ class DiscordApp {
   isCmdGroup(group) {
     return this.Commands.checkGroup(group);
   }
-  checkForCmdCall(content, prefix) {
+  checkForCmdCall(msg, prefix) {
     var cmdInfo;
-    if(content.startsWith(prefix)) {
-      cmdInfo = parseCmd(this, content, prefix);
+    if(msg.startsWith(prefix)) {
+      cmdInfo = parseCmd(this, msg, prefix);
       cmdInfo.default = false;
     }
-    else if(content.startsWith(process.env.DEFAULT_CMD_PREFIX)) {
-      cmdInfo = parseCmd(this, content, prefix);
+    else if(msg.startsWith('>')) {
+      cmdInfo = parseCmd(this, msg, prefix);
       cmdInfo.default = true;
     }
     return cmdInfo;
