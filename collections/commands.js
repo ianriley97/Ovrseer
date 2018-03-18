@@ -1,9 +1,10 @@
 var groupCount = 0;
 
 class Commands {
-  constructor(cmdFolderPath) {
+  constructor(cmdFolderPath, defCmdPrefix) {
     this.Groups = new Map();
     this.Commands = [new Map()];
+    this.DefCmdPrefix = defCmdPrefix;
     readDirectory(this, cmdFolderPath);
   }
   add(cmd, group) {

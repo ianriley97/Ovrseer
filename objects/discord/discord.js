@@ -1,10 +1,11 @@
 const DiscordJS = require('discord.js');
 
 class DiscordApp {
-  constructor(commandList) {
+  constructor(dbManager, commandList, ownerId) {
     const Path = require('path');
+    this.DB = dbManager;
     this.Commands = commandList;
-    this.Client = new DiscordJS.Client({owner:[234921929188966401]});
+    this.Client = new DiscordJS.Client({owner:[ownerId]});
     require(Path.join(__dirname, '..', '..', 'utility', 'event-loader.js'))(this, __dirname);
     this.Client.login(process.env.DISCORD_BOT_TOKEN);
   }
@@ -24,7 +25,7 @@ class DiscordApp {
       cmdInfo = parseCmd(this, msg, prefix);
       cmdInfo.default = false;
     }
-    else if(msg.startsWith('>')) {
+    else if(msg.startsWith(this.Commands.DefCmdPrefix)) {
       cmdInfo = parseCmd(this, msg, prefix);
       cmdInfo.default = true;
     }
