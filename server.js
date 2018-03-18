@@ -1,3 +1,4 @@
+require('dotenv').config();
 // Node Modules
 const HTTP = require('http');
 const FileSystem = require('fs');
