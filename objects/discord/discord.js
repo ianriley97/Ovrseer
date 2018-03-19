@@ -1,10 +1,11 @@
 const DiscordJS = require('discord.js');
 
 class DiscordApp {
-  constructor(dbManager, commandList, ownerId) {
+  constructor(dbManager, commandList, wordParser, ownerId) {
     const Path = require('path');
     this.DB = dbManager;
     this.Commands = commandList;
+    this.WordParser = wordParser;
     this.Client = new DiscordJS.Client({owner:[ownerId]});
     require(Path.join(__dirname, '..', '..', 'utility', 'event-loader.js'))(this, __dirname);
     this.Client.login(process.env.DISCORD_BOT_TOKEN);
@@ -30,6 +31,10 @@ class DiscordApp {
       cmdInfo.default = true;
     }
     return cmdInfo;
+  }
+  parseMessage(content, checkList) {
+    if(!checkList) checkList = this.WordParser.blacklist;
+    var found = this.WordParser.parse(content, checkList);
   }
 }
 
