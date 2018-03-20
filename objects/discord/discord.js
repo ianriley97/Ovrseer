@@ -34,10 +34,15 @@ class DiscordApp {
   }
   parseMessage(content, checkList) {
     if(!checkList) checkList = this.WordParser.blacklist;
-    var found = this.WordParser.parse(content, checkList);
+    var found = this.WordParser.find(content, checkList);
+  }
+  replaceMessage(content, checkList) {
+    if(!checkList) checkList = this.WordParser.blacklist;
+    var info = this.WordParser.replace(content, checkList);
+    var found = info.found;
+    return info.newStr;
   }
 }
-
 module.exports = DiscordApp;
 
 function parseCmd(app, str, prefix) {

@@ -9,5 +9,5 @@ module.exports = function(app, args) { // args = [message]
     cmd.guild = message.guild;
     app.runCmd(cmd);
   }
-  else app.parseMessage(message.content);
+  else app.parseMessage(message.content, null);
 };
