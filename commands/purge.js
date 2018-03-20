@@ -11,10 +11,12 @@ exports.help = {
 };
 
 exports.run = {
-  discord: function(params) {
-    let messagecount = parseInt(params.join(' '));
+  discord: function(cmdParams) {
+    var message = cmdParams['message'];
+    var params = cmdParams['params'];
+    let messageCount = parseInt(params.join(' '));
     message.channel.fetchMessages({
-      limit: messagecount
+      limit: messageCount
     }).then(messages => message.channel.bulkDelete(messages));
   }
 };

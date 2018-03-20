@@ -54,7 +54,7 @@ function parseCmd(app, str, prefix) {
     command = params[0];
     params = params.slice(1);
   }
-  params = params.join(' ');
+  params = params.join(' ').trim();
   return {
     'command': command,
     'group': group,

@@ -11,8 +11,9 @@ exports.help = {
 };
 
 exports.run = {
-  discord: function(params) {
-    message.delete();
+  discord: function(cmdParams) {
+    var message = cmdParams['message'];
+    var params = cmdParams['params'];
     if(params.length == 0) {
       const CoinSide = ['Heads', 'Tails'];
       var side = Math.round(Math.random());

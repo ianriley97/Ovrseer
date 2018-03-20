@@ -6,47 +6,24 @@ exports.config = {
 
 exports.help = {
   name: 'roll',
-  description: 'Rolls a number between 0 and <max> (default 6) or between <min> and <max>. (up to 1,000,000)',
-  usage: 'roll , roll <max> , roll <min> <max>'
+  description: 'Rolls a number between, and including 1 and <max> (default 6) or between <min> and <max>.',
+  usage: 'roll , roll <max> , roll <min/max> <max/min>'
 };
 
 exports.run = {
-  discord: function(params) {
-    var nums = generateNumbers(params);
-    if(nums) message.reply(` rolled **${nums.val}**`);
+  discord: function(cmdParams) {
+    var message = cmdParams['message'];
+    var params = cmdParams['params'];
+    var lowNum = 1, highNum = 6;
+    if(params.length > 0) {
+      var paramArr = params.split(' ', 2).map(Number);
+      if(paramArr.length == 1) highNum = paramArr[0];
+      else {
+        lowNum = Math.min(paramArr[0], paramArr[1]);
+        highNum = Math.max(paramArr[0], paramArr[1]);
+      }
+    }
+    var rollVal = Math.floor(Math.random() * (highNum-lowNum+1) + lowNum);
+    message.reply(' rolled **' + rollVal + '**');
   }
 };
-
-function generateNumbers(params) {
-  var lowNum = 1, highNum = 6;
-  if(params.length > 0) {
-    if(!allNumbers(params) || greaterThanAllowed(params)) return;
-    if(params.length == 1) {
-      highNum = params[0];
-    }
-    else if(params.length == 2) {
-      lowNum = params[0];
-      highNum = params[1];
-    }
-  }
-  var rollVal = Math.floor(Math.random() * (highNum-lowNum+1) + Number.parseInt(lowNum));
-  var nums = {};
-  nums.val = rollVal;
-  nums.low = lowNum;
-  nums.high = highNum;
-  return nums;
-}
-
-function greaterThanAllowed(arr) {
-  for(var i in arr) {
-    if(arr[i] > 1000000) return true;
-  }
-  return false;
-}
-
-function allNumbers(arr) {
-  for(var i in arr) {
-    if(isNaN(arr[i])) return false;
-  }
-  return true;
-}

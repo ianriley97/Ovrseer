@@ -1,5 +1,5 @@
 exports.config = {
-  enabled: true,
+  enabled: false,
   aliases: [],
   permLvl: 0
 };
@@ -11,8 +11,9 @@ exports.help = {
 };
 
 exports.run = {
-  discord: function(params) {
-    var guild = objs.guild;
+  discord: function(cmdParams) {
+    var guild = cmdParams['guild'];
+    var params = cmdParams['params'];
     message.reply(GetStateStr(guild, params) + "**" + guild.CmdPrefix + "**");
   }
 };
