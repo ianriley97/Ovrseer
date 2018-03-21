@@ -1,36 +1,48 @@
 var groupCount = 0;
 
 class Commands {
-  constructor(cmdFolderPath, defCmdPrefix) {
-    this.Groups = new Map();
-    this.Commands = [new Map()];
-    this.DefCmdPrefix = defCmdPrefix;
+  constructor(cmdFolderPath, cmdPrefix) {
+    this.groups = new Map();
+    this.commands = [new Map()];
+    this.defaultCmdPrefix = cmdPrefix;
     readDirectory(this, cmdFolderPath);
   }
   add(cmd, group) {
     if(group) cmd.help.group = group;
     var cmdGroup = cmd.help.group;
-    var groupIndex = this.Groups.get(cmdGroup);
+    var groupIndex = this.groups.get(cmdGroup);
     if(!groupIndex) {
       if(cmdGroup) {
         groupIndex = groupCount++;
-        this.Groups.set(cmdGroup, groupIndex);
-        this.Commands.push(new Map());
+        this.groups.set(cmdGroup, groupIndex);
+        this.commands.push(new Map());
       }
       else groupIndex = 0;
     }
     var cmdName = cmd.help.name;
-    this.Commands[groupIndex].set(cmdName, new Command(cmd.config, cmd.help, cmd.run));
+    this.commands[groupIndex].set(cmdName, new Command(cmd.config, cmd.help, cmd.run));
     console.log(`Command Loaded: ${(group) ? `${group} - ${cmdName}` : `${cmdName}`}`);
   }
   get(cmdName, cmdGroup) {
-    var groupIndex = this.Groups.get(cmdGroup);
+    var groupIndex = this.groups.get(cmdGroup);
     if(!groupIndex) groupIndex = 0;
-    var cmd = this.Commands[groupIndex].get(cmdName);
+    var cmd = this.commands[groupIndex].get(cmdName);
     return cmd;
   }
-  checkGroup(group) {
-    return this.Groups.has(group);
+  isCmdGroup(group) {
+    return this.groups.has(group);
+  }
+  parseForCmd(msg, prefix) {
+    var cmdInfo;
+    if(msg.startsWith(prefix)) {
+      cmdInfo = parseCmd(this, msg, prefix);
+      cmdInfo.default = false;
+    }
+    else if(msg.startsWith(this.commands.defCmdPrefix)) {
+      cmdInfo = parseCmd(this, msg, prefix);
+      cmdInfo.default = true;
+    }
+    return cmdInfo;
   }
 }
 
@@ -52,6 +64,23 @@ function readDirectory(listObj, dirPath, group) {
       });
     }
   });
+}
+
+function parseCmd(listObj, str, prefix) {
+  var command = str.split(' ')[0].slice(prefix.length);
+  var params = str.split(' ').slice(1);
+  var group;
+  if(listObj.isCmdGroup(command)) {
+    group = command;
+    command = params[0];
+    params = params.slice(1);
+  }
+  params = params.join(' ').trim();
+  return {
+    'command': command,
+    'group': group,
+    'params': params
+  };
 }
 
 class Command {
