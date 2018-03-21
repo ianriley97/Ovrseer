@@ -1,63 +1,53 @@
+const Path = require('path');
 const DiscordJS = require('discord.js');
 
+const Guild = require(Path.join(__dirname, 'guild.js'));
+
 class DiscordApp {
-  constructor(dbManager, commandList, wordParser, ownerId) {
+  constructor(settings, commandList, wordParser, dbManager) {
     const Path = require('path');
-    this.DB = dbManager;
-    this.Commands = commandList;
-    this.WordParser = wordParser;
-    this.Client = new DiscordJS.Client({owner:[ownerId]});
+    this.client = new DiscordJS.Client({owner:settings.discord_owner_ids});
     require(Path.join(__dirname, '..', '..', 'utility', 'event-loader.js'))(this, __dirname);
-    this.Client.login(process.env.DISCORD_BOT_TOKEN);
+    this.db = dbManager;
+    this.commands = commandList;
+    this.settings = settings;
+    this.guilds = new Map();
+    this.word_parser = wordParser;
+    this.client.login(process.env.DISCORD_BOT_TOKEN);
   }
-  runCmd(cmdParams, isDefPrefix) {
-    var cmd = this.Commands.get(cmdParams['command'], cmdParams['group']);
+  addGuild(guildObj) {
+    var newG = new Guild(this.db, guildObj, this.settings);
+    this.guilds.set(guildObj.id, newG);
+    console.log(`> Guild, "${newG.name}", added.`);
+    return newG;
+  }
+  getGuild(guildObj, cb) {
+    var g = this.guilds.get(guildObj.id);
+    if(!g) g = this.addGuild(guildObj);
+    cb(g);
+  }
+  removeGuild(guildObj) {
+    this.guilds.delete(guildObj.id);
+  }
+  runCmd(cmdParams) {
+    var cmd = this.commands.get(cmdParams['command'], cmdParams['group']);
     if(cmd) {
-      var exec = cmd.run['discord'];
-      if(exec && cmd.config.enabled) exec(cmdParams);
+      var exe = cmd.run['discord'];
+      if(exe && cmd.config.enabled) exe(cmdParams);
     }
   }
-  isCmdGroup(group) {
-    return this.Commands.checkGroup(group);
-  }
-  checkForCmdCall(msg, prefix) {
-    var cmdInfo;
-    if(msg.startsWith(prefix)) {
-      cmdInfo = parseCmd(this, msg, prefix);
-      cmdInfo.default = false;
-    }
-    else if(msg.startsWith(this.Commands.DefCmdPrefix)) {
-      cmdInfo = parseCmd(this, msg, prefix);
-      cmdInfo.default = true;
-    }
-    return cmdInfo;
+  checkForCmd(msg, prefix) {
+    return this.commands.parseForCmd(msg, prefix);
   }
   parseMessage(content, checkList) {
-    if(!checkList) checkList = this.WordParser.blacklist;
-    var found = this.WordParser.find(content, checkList);
+    if(!checkList) checkList = this.word_parser.blacklist;
+    var found = this.word_parser.find(content, checkList);
   }
   replaceMessage(content, checkList) {
-    if(!checkList) checkList = this.WordParser.blacklist;
-    var info = this.WordParser.replace(content, checkList);
+    if(!checkList) checkList = this.word_parser.blacklist;
+    var info = this.word_parser.replace(content, checkList);
     var found = info.found;
     return info.newStr;
   }
 }
 module.exports = DiscordApp;
-
-function parseCmd(app, str, prefix) {
-  var command = str.split(' ')[0].slice(prefix.length);
-  var params = str.split(' ').slice(1);
-  var group;
-  if(app.isCmdGroup(command)) {
-    group = command;
-    command = params[0];
-    params = params.slice(1);
-  }
-  params = params.join(' ').trim();
-  return {
-    'command': command,
-    'group': group,
-    'params': params
-  };
-}

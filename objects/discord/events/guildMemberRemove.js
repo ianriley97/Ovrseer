@@ -1,5 +1,5 @@
 module.exports = function(app, args) { // args = [member]
-  var client = app.Client;
+  var client = app.client;
   var member = args[0];
 
 };
