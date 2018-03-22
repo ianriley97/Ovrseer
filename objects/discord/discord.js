@@ -19,16 +19,20 @@ class DiscordApp {
       app.client.login(process.env.DISCORD_BOT_TOKEN);
     });
   }
-  addUser(userObj, cb) {
+  addUser(userObj, cb, guildObj) {
     var newU = new User(this.db, userObj, this.settings);
     this.users.set(userObj.id, newU);
+    if(guildObj) guildObj.addMember(newU);
     this.db.addUser(newU);
     cb(newU);
   }
-  getUser(userObj, cb) {
+  getUser(userObj, cb, guildObj) {
     var u = this.users.get(userObj.id);
-    if(!u) this.addUser(userObj, cb);
-    else cb(u);
+    if(!u) this.addUser(userObj, cb, guildObj);
+    else {
+      if(guildObj) guildObj.addMember(u);
+      cb(u);
+    }
   }
   addGuild(guildObj, cb) {
     var newG = new Guild(this.db, guildObj, this.settings);

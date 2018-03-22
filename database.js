@@ -15,18 +15,25 @@ class DatabaseManager {
     });
   }
   query(queryStr, cb) {
-    this.db.query(queryStr).then(function(res) { if(cb) cb(res); }).catch(function(err) { console.log(err); });
+    var dbObj = this;
+    this.db.query(queryStr).then(function(res) {
+      if(cb) cb(res, dbObj);
+    }).catch(function(err) { console.log(err); });
   }
   initUsers(cb) {
     const User = require(Path.join(__dirname, 'objects', 'user.js'));
     var users = new Map();
-    this.query('SELECT * FROM users;', function(res) {
-      res.rows.forEach(function(user) {
-        var oldU = new User(this, user, Settings, true);
-        users.set(user.id, oldU);
-        console.log(`>> Init: User, "${oldU.name}", added.`);
-      });
-      cb(users);
+    this.query('SELECT * FROM users;', function(res, db) {
+      var rows = res.rows, length = rows.length;
+      for(var i = 0; i <= length; i++) {
+        if(i == length) cb(users);
+        else {
+          var user = rows[i];
+          var oldU = new User(db, user, Settings, true);
+          users.set(user.id, oldU);
+          console.log(`>> Init: User, "${oldU.name}", added.`);
+        }
+      }
     });
   }
   addUser(userObj) {
@@ -45,17 +52,23 @@ class DatabaseManager {
   initGuilds(app, cb) {
     const Guild = require(Path.join(__dirname, 'objects', 'discord', 'guild.js'));
     var guilds = new Map();
-    this.query('SELECT * FROM guilds;', function(gRes) {
-      gRes.rows.forEach(function(guild) {
-        var oldG = new Guild(this, guild, Settings, true);
-        this.query(`SELECT * FROM guilds_users WHERE guild_id=${oldG.id}`, function(mRes) {
-          mRes.rows.forEach(function(member) {
-            oldG.addMember(member.user_id);
-            console.log(`>> Init: Guild, "${oldG.name}" added.`);
+    this.query('SELECT * FROM guilds;', function(gRes, db) {
+      var rows = gRes.rows, length = rows.length;
+      for(var i = 0; i <= length; i++) {
+        if(i == length) cb(app, guilds);
+        else {
+          var guild = rows[i];
+          var oldG = new Guild(db, guild, Settings, true);
+          db.query(`SELECT * FROM guilds_users WHERE guild_id=${oldG.id}`, function(mRes) {
+            mRes.rows.forEach(function(member) {
+              oldG.memberIds.push(member.user_id);
+              console.log(member);
+            });
           });
-        });
-      });
-      cb(app, guilds);
+          guilds.set(oldG.id, oldG);
+          console.log(`>> Init: Guild, "${oldG.name}", added.`);
+        }
+      }
     });
   }
   addGuild(guildObj) {
@@ -72,10 +85,14 @@ class DatabaseManager {
     });
   }
   addGuildMember(guildObj, userObj) {
-    this.query(`INSERT INTO guilds_users VALUES (${guildObj.id}, ${userObj.id});`);
+    this.query(`INSERT INTO guilds_users VALUES (${guildObj.id}, ${userObj.id});`, function(res) {
+      console.log(`> User, "${userObj.name}", added to guild "${guildObj.name}".`);
+    });
   }
   removeGuildMember(guildObj, userObj) {
-    this.query(`DELETE FROM guilds_users WHERE guild_id = ${guildObj.id} AND user_id = ${userObj.id}`)
+    this.query(`DELETE FROM guilds_users WHERE guild_id = ${guildObj.id} AND user_id = ${userObj.id}`, function(res) {
+      console.log(`> User, "${userObj.name}", removed from guild "${guildObj.name}".`);
+    });
   }
 }
 

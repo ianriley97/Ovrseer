@@ -13,6 +13,6 @@ module.exports = function(app, args) { // args = [message]
         app.runCmd(cmd);
       }
       else app.parseMessage(message.content, null);
-    });
+    }, guild);
   });
 };

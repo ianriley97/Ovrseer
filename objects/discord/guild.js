@@ -10,16 +10,20 @@ class Guild {
     this.cmd_prefix = (fromDB) ? guildObj.cmd_prefix : settings.cmd_prefix;
     this.memberIds = [];
   }
-  addMember(id) {
-    this.memberIds.push(id);
-    this.db.query(`INSERT INTO guilds_users VALUES (${this.id}, ${id});`);
+  addMember(userObj) {
+    var id = userObj.id;
+    var i = this.memberIds.indexOf(id);
+    if(i == -1) {
+      this.memberIds.push(id);
+      this.db.addGuildMember(this, userObj);
+    }
   }
-  removeMember(memberObj) {
-    var id = memberObj.id;
-    var index = this.memberIds.indexOf(id);
-    if (index > -1) {
-      this.memberIds.splice(index, 1);
-      this.db.query(`DELETE FROM guilds_users WHERE guilds_users.user_id = ${id} AND guilds_users.guild_id = ${this.id}`);
+  removeMember(userObj) {
+    var id = userObj.id;
+    var i = this.memberIds.indexOf(id);
+    if (i > -1) {
+      this.memberIds.splice(i, 1);
+      this.db.removeGuildMember(this, userObj);
     }
   }
   setCmdPrefix(prefix) {
