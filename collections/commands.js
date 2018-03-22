@@ -4,7 +4,7 @@ class Commands {
   constructor(cmdFolderPath, cmdPrefix) {
     this.groups = new Map();
     this.commands = [new Map()];
-    this.defaultCmdPrefix = cmdPrefix;
+    this.defCmdPrefix = cmdPrefix;
     readDirectory(this, cmdFolderPath);
   }
   add(cmd, group) {
@@ -36,10 +36,10 @@ class Commands {
     var cmdInfo;
     if(msg.startsWith(prefix)) {
       cmdInfo = parseCmd(this, msg, prefix);
-      cmdInfo.default = false;
+      cmdInfo.default = prefix == this.defCmdPrefix;
     }
-    else if(msg.startsWith(this.commands.defCmdPrefix)) {
-      cmdInfo = parseCmd(this, msg, prefix);
+    else if(msg.startsWith(this.defCmdPrefix)) {
+      cmdInfo = parseCmd(this, msg, this.defCmdPrefix);
       cmdInfo.default = true;
     }
     return cmdInfo;
