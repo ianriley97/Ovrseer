@@ -15,7 +15,8 @@ class Guild {
     var i = this.memberIds.indexOf(id);
     if(i == -1) {
       this.memberIds.push(id);
-      this.db.addGuildMember(this, userObj);
+      if(this.db) this.db.addGuildMember(this, userObj);
+      else console.log(`> User, "${userObj.name || userObj.username}", added to guild "${this.name}".`);
     }
   }
   removeMember(userObj) {
@@ -23,12 +24,14 @@ class Guild {
     var i = this.memberIds.indexOf(id);
     if (i > -1) {
       this.memberIds.splice(i, 1);
-      this.db.removeGuildMember(this, userObj);
+      if(this.db) this.db.removeGuildMember(this, userObj);
+      else console.log(`> User, "${userObj.name || userObj.username}", removed from guild "${this.name}".`);
     }
   }
   setCmdPrefix(prefix) {
     this.cmd_prefix = prefix;
-    this.db.query(`UPDATE guilds SET cmd_prefix='${prefix}' WHERE guilds.id=${this.id};`);
+    if(this.db) this.db.setCmdPrefix('guilds', this, prefix);
+    else console.log(`> DB: Guild, "${this.name}", updated their cmd prefix to "${prefix}".`)
   }
 }
 

@@ -14,16 +14,23 @@ class DiscordApp {
     this.settings = settings;
     this.word_parser = wordParser;
     this.users = users;
-    this.db.initGuilds(this, function(app, guilds) {
-      app.guilds = guilds;
-      app.client.login(process.env.DISCORD_BOT_TOKEN);
-    });
+    if(dbManager) {
+      dbManager.initGuilds(this, function(app, guilds) {
+        app.guilds = guilds;
+        app.client.login(process.env.DISCORD_BOT_TOKEN);
+      });
+    }
+    else {
+      this.guilds = new Map();
+      this.client.login(process.env.DISCORD_BOT_TOKEN);
+    }
   }
   addUser(userObj, cb, guildObj) {
     var newU = new User(this.db, userObj, this.settings);
     this.users.set(userObj.id, newU);
     if(guildObj) guildObj.addMember(newU);
-    this.db.addUser(newU);
+    if(this.db) this.db.addUser(newU);
+    else console.log(`> User, "${newU.name}", added.`);
     cb(newU);
   }
   getUser(userObj, cb, guildObj) {
@@ -34,10 +41,16 @@ class DiscordApp {
       cb(u);
     }
   }
+  removeUser(userObj) {
+    this.users.delete(userObj.id);
+    if(this.db) this.db.removeUser(userObj);
+    else console.log(`> User, "${userObj.username}", removed.`);
+  }
   addGuild(guildObj, cb) {
     var newG = new Guild(this.db, guildObj, this.settings);
     this.guilds.set(guildObj.id, newG);
-    this.db.addGuild(newG);
+    if(this.db) this.db.addGuild(newG);
+    else console.log(`> Guild, "${newG.name}", added.`);
     cb(newG);
   }
   getGuild(guildObj, cb) {
@@ -46,9 +59,9 @@ class DiscordApp {
     else cb(g);
   }
   removeGuild(guildObj) {
-    var id = guildObj.id;
-    this.guilds.delete(id);
-    this.db.removeGuild(id);
+    this.guilds.delete(guildObj.id);
+    if(this.db) this.db.removeGuild(guildObj);
+    else console.log(`> Guild, "${guildObj.name}", removed.`);
   }
   runCmd(cmdParams) {
     var cmd = this.commands.get(cmdParams['command'], cmdParams['group']);

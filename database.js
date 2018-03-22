@@ -3,15 +3,17 @@ const Path = require('path');
 const Settings = require(Path.join(__dirname, 'settings.json'));
 
 class DatabaseManager {
-  constructor(connection) {
+  constructor(connection, cb) {
     const {Client} = require('pg');
     this.db = new Client({
       connectionString: connection,
       ssl: true
     });
+    var dbm = this;
     this.db.connect(function(err) {
-      if(err) console.log(err);
+      if(err) console.error(err);
       else console.log('Database connection successful');
+      cb(err, dbm);
     });
   }
   query(queryStr, cb) {
@@ -38,7 +40,7 @@ class DatabaseManager {
   }
   addUser(userObj) {
     this.query(`INSERT INTO users VALUES (${userObj.id}, '${userObj.name}');`, function(res) {
-      console.log(`> User, "${userObj.name}", added.`);
+      console.log(`> DB: User, "${userObj.name}", added.`);
     });
   }
   updateUser(userObj) {
@@ -46,7 +48,7 @@ class DatabaseManager {
   }
   removeUser(userObj) {
     this.query(`DELETE FROM users WHERE users.id=${userObj.id}`, function(res) {
-      console.log(`> User, "${userObj.name}", removed.`);
+      console.log(`> DB: User, "${userObj.name}", removed.`);
     });
   }
   initGuilds(app, cb) {
@@ -72,7 +74,7 @@ class DatabaseManager {
   }
   addGuild(guildObj) {
     this.db.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}');`, function(res) {
-      console.log(`> Guild, "${guildObj.name}", added.`);
+      console.log(`> DB: Guild, "${guildObj.name}", added.`);
     });
   }
   updateGuild(guildObj) {
@@ -80,17 +82,22 @@ class DatabaseManager {
   }
   removeGuild(guildObj) {
     this.query(`DELETE FROM guilds WHERE guilds.id = ${guildObj.id}; DELETE FROM guilds_users WHERE guilds_users.guild_id = ${guildObj.id};`, function(res) {
-      console.log(`> Guild, "${guildObj.name}", removed.`);
+      console.log(`> DB: Guild, "${guildObj.name}", removed.`);
     });
   }
   addGuildMember(guildObj, userObj) {
     this.query(`INSERT INTO guilds_users VALUES (${guildObj.id}, ${userObj.id});`, function(res) {
-      console.log(`> User, "${userObj.name}", added to guild "${guildObj.name}".`);
+      console.log(`> DB: User, "${userObj.name}", added to guild "${guildObj.name}".`);
     });
   }
   removeGuildMember(guildObj, userObj) {
     this.query(`DELETE FROM guilds_users WHERE guild_id = ${guildObj.id} AND user_id = ${userObj.id}`, function(res) {
-      console.log(`> User, "${userObj.name}", removed from guild "${guildObj.name}".`);
+      console.log(`> DB: User, "${userObj.name}", removed from guild "${guildObj.name}".`);
+    });
+  }
+  setCmdPrefix(table, obj, prefix) {
+    this.db.query(`UPDATE ${table} SET cmd_prefix='${prefix}' WHERE ${table}.id=${obj.id};`, function(res) {
+      console.log(`> DB: Group, "${obj.name}", updated their cmd prefix to "${prefix}".`)
     });
   }
 }
