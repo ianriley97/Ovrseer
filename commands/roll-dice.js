@@ -1,6 +1,7 @@
 exports.config = {
   enabled: true,
   aliases: [],
+  default: false,
   permLvl: 0
 };
 
