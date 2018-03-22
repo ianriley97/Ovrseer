@@ -20,7 +20,7 @@ class DatabaseManager {
     var dbObj = this;
     this.db.query(queryStr).then(function(res) {
       if(cb) cb(res, dbObj);
-    }).catch(function(err) { console.log(err); });
+    }).catch(function(err) { console.error(err); });
   }
   initUsers(cb) {
     const User = require(Path.join(__dirname, 'objects', 'user.js'));
