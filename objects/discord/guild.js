@@ -28,6 +28,7 @@ class Guild {
   }
   setCmdPrefix(prefix) {
     this.cmd_prefix = prefix;
+    this.db.query(`UPDATE guilds SET cmd_prefix='${prefix}' WHERE guilds.id=${this.id};`);
   }
 }
 
