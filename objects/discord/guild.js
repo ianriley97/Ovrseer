@@ -1,29 +1,26 @@
 const Path = require('path');
 
-const User = require(Path.join(__dirname, 'user.js'));
-
 class Guild {
-  constructor(db, guildObj, defaults) {
+  constructor(db, guildObj, settings, fromDB) {
     this.db = db;
+    this.settings = settings;
     this.id = guildObj.id;
     this.name = guildObj.name;
-    this.guild_obj = guildObj;
-    this.members = new Map();
-    this.cmd_prefix = defaults.cmd_prefix;
+    this.guild_obj = (fromDB) ? guildObj.guild_obj : guildObj;
+    this.cmd_prefix = (fromDB) ? guildObj.cmd_prefix : settings.cmd_prefix;
+    this.memberIds = [];
   }
-  addMember(memberObj) {
-    var newM = new User(this.db, memberObj);
-    this.members.set(memberObj.id, newM);
-    console.log(`> Member, "${newM.name}", added to guild "${this.name}".`);
-    return newM;
-  }
-  getMember(memberObj, cb) {
-    var m = this.members.get(memberObj.id);
-    if(!m) m = this.addMember(memberObj);
-    cb(m);
+  addMember(id) {
+    this.memberIds.push(id);
+    this.db.query(`INSERT INTO guilds_users VALUES (${this.id}, ${id});`);
   }
   removeMember(memberObj) {
-    this.members.delete(memberObj.id);
+    var id = memberObj.id;
+    var index = this.memberIds.indexOf(id);
+    if (index > -1) {
+      this.memberIds.splice(index, 1);
+      this.db.query(`DELETE FROM guilds_users WHERE guilds_users.user_id = ${id} AND guilds_users.guild_id = ${this.id}`);
+    }
   }
   setCmdPrefix(prefix) {
     this.cmd_prefix = prefix;

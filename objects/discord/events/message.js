@@ -3,7 +3,7 @@ module.exports = function(app, args) { // args = [message]
   var message = args[0];
   if(message.author.bot) return;
   app.getGuild(message.guild, function(guild) {
-    guild.getMember(message.author, function(member) {
+    app.getUser(message.author, function(member) {
       var cmd = app.checkForCmd(message.content, guild.cmd_prefix);
       if(cmd) {
         cmd.app = app,
