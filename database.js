@@ -62,7 +62,6 @@ class DatabaseManager {
           db.query(`SELECT * FROM guilds_users WHERE guild_id=${oldG.id}`, function(mRes) {
             mRes.rows.forEach(function(member) {
               oldG.memberIds.push(member.user_id);
-              console.log(member);
             });
           });
           guilds.set(oldG.id, oldG);
