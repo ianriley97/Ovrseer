@@ -11,10 +11,11 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, function() {
   console.log('Bot running on port ' + PORT);
 });
-// Initialize necessary objects for clients
-const DBManager = new (require(Path.join(__dirname, 'database.js')))(process.env.DATABASE_URL);
-const CommandList = new (require(Path.join(__dirname, 'collections', 'commands.js')))(Path.join(__dirname, 'commands'), '>');
+// Initialize necessary objects
 const Settings = require(Path.join(__dirname, 'settings.json'));
+const CommandList = new (require(Path.join(__dirname, 'collections', 'commands.js')))(Path.join(__dirname, 'commands'), Settings.cmd_prefix);
 const WordParser = require(Path.join(__dirname, 'objects', 'parse-string', 'word-parser.js'));
+// Initialize optional objects
+const DBManager = new (require(Path.join(__dirname, 'database.js')))(process.env.DATABASE_URL);
 // Initialize clients
-const DiscordClient = new (require(Path.join(__dirname, 'objects', 'discord', 'discord.js')))(DBManager, CommandList, Settings, WordParser);
+const DiscordClient = new (require(Path.join(__dirname, 'objects', 'discord', 'discord.js')))(Settings, CommandList, WordParser, DBManager);
