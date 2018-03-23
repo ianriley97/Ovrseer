@@ -39,7 +39,7 @@ class DatabaseManager {
     });
   }
   addUser(userObj) {
-    this.query(`INSERT INTO users VALUES (${userObj.id}, '${userObj.name}');`, function(res) {
+    this.query(`INSERT INTO users VALUES (${userObj.id}, '${userObj.name}' ON CONFLICT DO NOTHING);`, function(res) {
       console.log(`> DB: User, "${userObj.name}", added.`);
     });
   }
@@ -73,7 +73,7 @@ class DatabaseManager {
     });
   }
   addGuild(guildObj) {
-    this.db.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}', ${guildObj.blacklist});`, function(res) {
+    this.db.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}', ${guildObj.blacklist} ON CONFLICT DO NOTHING);`, function(res) {
       console.log(`> DB: Guild, "${guildObj.name}", added.`);
     });
   }
