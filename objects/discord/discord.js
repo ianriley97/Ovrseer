@@ -5,7 +5,7 @@ const User = require(Path.join(__dirname, '..', 'user.js'));
 const Guild = require(Path.join(__dirname, 'guild.js'));
 
 class DiscordApp {
-  constructor(settings, commandList, users, wordParser, dbManager) {
+  constructor(botToken, settings, commandList, users, wordParser, dbManager) {
     const Path = require('path');
     this.client = new DiscordJS.Client({owner:settings.discord_owner_ids});
     require(Path.join(__dirname, '..', '..', 'utilities', 'event-loader.js'))(this, __dirname);
@@ -18,12 +18,12 @@ class DiscordApp {
     if(dbManager) {
       dbManager.initGuilds(this, function(app, guilds) {
         app.guilds = guilds;
-        app.client.login(process.env.DISCORD_BOT_TOKEN);
+        app.client.login(botToken);
       });
     }
     else {
       this.guilds = new Map();
-      this.client.login(process.env.DISCORD_BOT_TOKEN);
+      this.client.login(botToken);
     }
   }
   addUser(userObj, cb) {
