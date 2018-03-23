@@ -8,10 +8,11 @@ class DiscordApp {
   constructor(settings, commandList, users, wordParser, dbManager) {
     const Path = require('path');
     this.client = new DiscordJS.Client({owner:settings.discord_owner_ids});
-    require(Path.join(__dirname, '..', '..', 'utility', 'event-loader.js'))(this, __dirname);
+    require(Path.join(__dirname, '..', '..', 'utilities', 'event-loader.js'))(this, __dirname);
     this.db = dbManager;
     this.commands = commandList;
     this.settings = settings;
+    this.settings.blacklist = wordParser.blacklist;
     this.word_parser = wordParser;
     this.users = users;
     if(dbManager) {
@@ -63,15 +64,15 @@ class DiscordApp {
     if(this.db) this.db.removeGuild(guildObj);
     else console.log(`> Guild, "${guildObj.name}", removed.`);
   }
+  checkForCmd(msg, prefix) {
+    return this.commands.parseForCmd(msg, prefix);
+  }
   runCmd(cmdParams) {
     var cmd = this.commands.get(cmdParams['command'], cmdParams['group']);
     if(cmd) {
       var exe = cmd.run['discord'];
       if(exe && cmd.config.enabled) exe(cmdParams);
     }
-  }
-  checkForCmd(msg, prefix) {
-    return this.commands.parseForCmd(msg, prefix);
   }
   parseMessage(content, checkList) {
     if(!checkList) checkList = this.word_parser.blacklist;

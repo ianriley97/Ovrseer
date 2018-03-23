@@ -14,8 +14,8 @@ server.listen(PORT, function() {
 // Initialize necessary objects
 const Settings = require(Path.join(__dirname, 'settings.json'));
 const CommandList = new (require(Path.join(__dirname, 'collections', 'commands.js')))(Path.join(__dirname, 'commands'), Settings.cmd_prefix);
-const WordParser = require(Path.join(__dirname, 'objects', 'parse-string', 'word-parser.js'));
-const DBManager = new (require(Path.join(__dirname, 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
+const WordParser = require(Path.join(__dirname, 'utilities', 'parse-string', 'word-parser.js'));
+const DBManager = new (require(Path.join(__dirname, 'database.js')))(null, function(err, dbManager) {
   // Initialize apps/clients
   const DiscordApp = require(Path.join(__dirname, 'objects', 'discord', 'discord.js'));
   if(err) {

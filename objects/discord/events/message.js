@@ -12,7 +12,7 @@ module.exports = function(app, args) { // args = [message]
         cmd.user = member;
         app.runCmd(cmd);
       }
-      else app.parseMessage(message.content, null);
+      else app.parseMessage(message.content, guild.blacklist);
     }, guild);
   });
 };

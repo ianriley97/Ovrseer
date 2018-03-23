@@ -73,7 +73,7 @@ class DatabaseManager {
     });
   }
   addGuild(guildObj) {
-    this.db.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}');`, function(res) {
+    this.db.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}', ${guildObj.blacklist});`, function(res) {
       console.log(`> DB: Guild, "${guildObj.name}", added.`);
     });
   }
@@ -95,9 +95,14 @@ class DatabaseManager {
       console.log(`> DB: User, "${userObj.name}", removed from guild "${guildObj.name}".`);
     });
   }
-  setCmdPrefix(table, obj, prefix) {
-    this.db.query(`UPDATE ${table} SET cmd_prefix='${prefix}' WHERE ${table}.id=${obj.id};`, function(res) {
+  updateCmdPrefix(table, obj, prefix) {
+    this.query(`UPDATE ${table} SET cmd_prefix='${prefix}' WHERE ${table}.id=${obj.id};`, function(res) {
       console.log(`> DB: Group, "${obj.name}", updated their cmd prefix to "${prefix}".`)
+    });
+  }
+  updateBlacklist(table, obj, words, stateStr) {
+    this.this.query(`UPDATE ${table} SET blacklist=${obj.blacklist} WHERE ${table}.id=${obj.id};`, function(res) {
+      console.log(`> DB: Group, "${obj.name}", ${stateStr[0]} "${words}" ${stateStr[1]} their blacklist.`);
     });
   }
 }

@@ -9,6 +9,7 @@ class Guild {
     this.guild_obj = (fromDB) ? guildObj.guild_obj : guildObj;
     this.cmd_prefix = (fromDB) ? guildObj.cmd_prefix : settings.cmd_prefix;
     this.memberIds = [];
+    this.blacklist = (fromDB) ? guildObj.blacklist : settings.blacklist;
   }
   addMember(userObj) {
     var id = userObj.id;
@@ -30,8 +31,35 @@ class Guild {
   }
   setCmdPrefix(prefix) {
     this.cmd_prefix = prefix;
-    if(this.db) this.db.setCmdPrefix('guilds', this, prefix);
-    else console.log(`> DB: Guild, "${this.name}", updated their cmd prefix to "${prefix}".`)
+    if(this.db) this.db.updateCmdPrefix('guilds', this, prefix);
+    else console.log(`> Guild, "${this.name}", updated their cmd prefix to "${prefix}".`)
+  }
+  addToBlacklist(words) {
+    var newWords = [];
+    var blacklist = this.blacklist;
+    words.forEach(function(word) {
+      if(blacklist.indexOf() == -1) {
+        blacklist.push(word);
+        newWords.push(word);
+      }
+    });
+    newWords = newWords.join(', ');
+    if(this.db) this.db.updateBlacklist('guilds', this, newWords, ['added', 'to']);
+    else console.log(`> Guild, "${this.name}", added "${newWords}" to their blacklist.`);
+  }
+  removeFromBlacklist(words) {
+    var removedWords = [];
+    var blacklist = this.blacklist;
+    words.forEach(function(word) {
+      var i = blacklist.indexOf(word);
+      if(i > -1) {
+        blacklist.splice(i, 1);
+        removedWords.push(word);
+      }
+    });
+    removedWords = removedWords.join(', ');
+    if(this.db) this.db.updateBlacklist('guilds', this, removedWords, ['removed', 'from']);
+    else console.log(`> Guild, "${this.name}", removed "${removedWords}" from their blacklist.`)
   }
 }
 

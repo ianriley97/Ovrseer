@@ -13,7 +13,7 @@ class Commands {
     var groupIndex = this.groups.get(cmdGroup);
     if(!groupIndex) {
       if(cmdGroup) {
-        groupIndex = groupCount++;
+        groupIndex = ++groupCount;
         this.groups.set(cmdGroup, groupIndex);
         this.commands.push(new Map());
       }
@@ -76,11 +76,12 @@ function parseCmd(listObj, str, prefix) {
     params = params.slice(1);
   }
   params = params.join(' ').trim();
-  return {
+  var cmd = {
     'command': command,
     'group': group,
     'params': params
   };
+  return cmd;
 }
 
 class Command {
