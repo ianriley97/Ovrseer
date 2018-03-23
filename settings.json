@@ -3,5 +3,6 @@
     234921929188966401
   ],
   "cmd_prefix": ">",
-  "webpage": "https://ovrseer.herokuapp.com"
+  "webpage": "https://ovrseer.herokuapp.com",
+  "app_purpose_notice_msg": "I aim to help the guild owners/admins monitor their server for certain content as well as provide them some tools for managing said server.\nPlease do not be worried. This is harmless to you, and none of your personal account data is being gathered/stored.\nIf you wish to check any stats gathered by me, just head to https://ovrseer.herokuapp.com ."
 }
