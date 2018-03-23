@@ -38,14 +38,16 @@ class Guild {
     var newWords = [];
     var blacklist = this.blacklist;
     words.forEach(function(word) {
-      if(blacklist.indexOf() == -1) {
+      if(blacklist.indexOf(word) == -1) {
         blacklist.push(word);
         newWords.push(word);
       }
     });
-    newWords = newWords.join(', ');
-    if(this.db) this.db.updateBlacklist('guilds', this, newWords, ['added', 'to']);
-    else console.log(`> Guild, "${this.name}", added "${newWords}" to their blacklist.`);
+    if(newWords.length > 0) {
+      newWords = newWords.join(', ');
+      if(this.db) this.db.updateBlacklist('guilds', this, newWords, ['added', 'to']);
+      else  console.log(`> Guild, "${this.name}", added "${newWords}" to their blacklist.`);
+    }
   }
   removeFromBlacklist(words) {
     var removedWords = [];
@@ -57,9 +59,11 @@ class Guild {
         removedWords.push(word);
       }
     });
-    removedWords = removedWords.join(', ');
-    if(this.db) this.db.updateBlacklist('guilds', this, removedWords, ['removed', 'from']);
-    else console.log(`> Guild, "${this.name}", removed "${removedWords}" from their blacklist.`)
+    if(removedWords.length > 0) {
+      removedWords = removedWords.join(', ');
+      if(this.db) this.db.updateBlacklist('guilds', this, removedWords, ['removed', 'from']);
+      else console.log(`> Guild, "${this.name}", removed "${removedWords}" from their blacklist.`)
+    }
   }
 }
 
