@@ -26,38 +26,38 @@ class DiscordApp {
       this.client.login(process.env.DISCORD_BOT_TOKEN);
     }
   }
-  addUser(userObj, cb, guildObj) {
+  addUser(userObj, cb) {
     var newU = new User(this.db, userObj, this.settings);
     this.users.set(userObj.id, newU);
-    if(guildObj) guildObj.addMember(newU);
     if(this.db) this.db.addUser(newU);
     else console.log(`> User, "${newU.name}", added.`);
-    cb(newU);
+    if(cb) cb(newU);
   }
-  getUser(userObj, cb, guildObj) {
+  getUser(userObj, cb) {
     var u = this.users.get(userObj.id);
-    if(!u) this.addUser(userObj, cb, guildObj);
-    else {
-      if(guildObj) guildObj.addMember(u);
-      cb(u);
-    }
+    if(!u) this.addUser(userObj, cb);
+    else cb(u);
   }
   removeUser(userObj) {
     this.users.delete(userObj.id);
     if(this.db) this.db.removeUser(userObj);
     else console.log(`> User, "${userObj.username}", removed.`);
   }
-  addGuild(guildObj, cb) {
+  addGuild(guildObj, cb, userObj) {
     var newG = new Guild(this.db, guildObj, this.settings);
     this.guilds.set(guildObj.id, newG);
+    if(userObj) newG.addMember(userObj);
     if(this.db) this.db.addGuild(newG);
     else console.log(`> Guild, "${newG.name}", added.`);
-    cb(newG);
+    if(cb) cb(newG);
   }
-  getGuild(guildObj, cb) {
+  getGuild(guildObj, cb, userObj) {
     var g = this.guilds.get(guildObj.id);
-    if(!g) this.addGuild(guildObj, cb);
-    else cb(g);
+    if(!g) this.addGuild(guildObj, cb, userObj);
+    else {
+      if(userObj) g.addMember(userObj);
+      cb(g);
+    }
   }
   removeGuild(guildObj) {
     this.guilds.delete(guildObj.id);
@@ -71,7 +71,8 @@ class DiscordApp {
     var cmd = this.commands.get(cmdParams['command'], cmdParams['group']);
     if(cmd) {
       var exe = cmd.run['discord'];
-      if(exe && cmd.config.enabled) exe(cmdParams);
+      var validPrefix = (cmdParams.default && cmd.config.default) || !cmdParams.default;
+      if(exe && cmd.config.enabled && validPrefix) exe(cmdParams);
     }
   }
   parseMessage(content, checkList) {
