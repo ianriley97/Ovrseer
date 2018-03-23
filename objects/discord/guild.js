@@ -11,6 +11,9 @@ class Guild {
     this.memberIds = [];
     this.blacklist = (fromDB) ? guildObj.blacklist : settings.blacklist;
   }
+  verifyFields() {
+
+  }
   update(guildObj) {
     this.name = guildObj.name;
     this.guild_obj = guildObj;

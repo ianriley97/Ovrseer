@@ -6,6 +6,9 @@ class User {
     this.name = (fromDB) ? userObj.name : userObj.username;
     this.user_obj = (fromDB) ? userObj.user_obj : userObj;
   }
+  verifyFields() {
+
+  }
   update(userObj) {
     this.name = userObj.username;
     this.user_obj = userObj;
