@@ -73,12 +73,9 @@ class DatabaseManager {
     });
   }
   addGuild(guildObj) {
-    this.db.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}', ${guildObj.blacklist} ON CONFLICT DO NOTHING);`, function(res) {
+    this.query(`INSERT INTO guilds VALUES (${guildObj.id}, '${guildObj.name}', '${guildObj.cmd_prefix}', ${guildObj.blacklist} ON CONFLICT DO NOTHING);`, function(res) {
       console.log(`> DB: Guild, "${guildObj.name}", added.`);
     });
-  }
-  updateGuild(guildObj) {
-
   }
   removeGuild(guildObj) {
     this.query(`DELETE FROM guilds WHERE guilds.id = ${guildObj.id}; DELETE FROM guilds_users WHERE guilds_users.guild_id = ${guildObj.id};`, function(res) {
@@ -95,10 +92,12 @@ class DatabaseManager {
       console.log(`> DB: User, "${userObj.name}", removed from guild "${guildObj.name}".`);
     });
   }
+  update(table, obj) {
+    var objStr = table.slice(0,-1) + '_obj';
+    this.query(`UPDATE ${table} SET name=${obj.name}, ${objStr}=${obj[objStr]}`, function(res) {});
+  }
   updateCmdPrefix(table, obj, prefix) {
-    this.query(`UPDATE ${table} SET cmd_prefix='${prefix}' WHERE ${table}.id=${obj.id};`, function(res) {
-      console.log(`> DB: Group, "${obj.name}", updated their cmd prefix to "${prefix}".`)
-    });
+    this.query(`UPDATE ${table} SET cmd_prefix='${prefix}' WHERE ${table}.id=${obj.id};`, function(res) {});
   }
   updateBlacklist(table, obj, words, stateStr) {
     this.this.query(`UPDATE ${table} SET blacklist=${obj.blacklist} WHERE ${table}.id=${obj.id};`, function(res) {

@@ -6,6 +6,11 @@ class User {
     this.name = (fromDB) ? userObj.name : userObj.username;
     this.user_obj = (fromDB) ? userObj.user_obj : userObj;
   }
+  update(userObj) {
+    this.name = userObj.username;
+    this.user_obj = userObj;
+    if(this.db) this.db.update('users', this);
+  }
 }
 
 module.exports = User;

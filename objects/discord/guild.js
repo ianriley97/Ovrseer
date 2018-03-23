@@ -11,6 +11,11 @@ class Guild {
     this.memberIds = [];
     this.blacklist = (fromDB) ? guildObj.blacklist : settings.blacklist;
   }
+  update(guildObj) {
+    this.name = guildObj.name;
+    this.guild_obj = guildObj;
+    if(this.db) this.db.update('guilds', this);
+  }
   addMember(userObj) {
     var id = userObj.id;
     var i = this.memberIds.indexOf(id);

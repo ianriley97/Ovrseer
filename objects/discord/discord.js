@@ -38,6 +38,12 @@ class DiscordApp {
     if(!u) this.addUser(userObj, cb);
     else cb(u);
   }
+  updateUser(userObj, cb) {
+    this.getUser(userObj, function(user) {
+      user.update(userObj);
+      if(cb) cb(user);
+    });
+  }
   removeUser(userObj) {
     this.users.delete(userObj.id);
     if(this.db) this.db.removeUser(userObj);
@@ -58,6 +64,12 @@ class DiscordApp {
       if(userObj) g.addMember(userObj);
       cb(g);
     }
+  }
+  updateGuild(guildObj, cb) {
+    this.getGuild(guildObj, function(guild) {
+      guild.update(guildObj);
+      if(cb) cb(guild);
+    });
   }
   removeGuild(guildObj) {
     this.guilds.delete(guildObj.id);
