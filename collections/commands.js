@@ -36,7 +36,7 @@ class Commands {
     var cmdInfo;
     if(msg.startsWith(prefix)) {
       cmdInfo = parseCmd(this, msg, prefix);
-      cmdInfo.default = prefix == this.defCmdPrefix;
+      cmdInfo.default = false;
     }
     else if(msg.startsWith(this.defCmdPrefix)) {
       cmdInfo = parseCmd(this, msg, this.defCmdPrefix);
