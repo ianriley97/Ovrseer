@@ -36,7 +36,10 @@ class DiscordApp {
   getUser(userObj, cb) {
     var u = this.users.get(userObj.id);
     if(!u) this.addUser(userObj, cb);
-    else cb(u.verifyFields());
+    else {
+      u.verifyFields();
+      cb(u);
+    }
   }
   updateUser(userObj, cb) {
     this.getUser(userObj, function(user) {
@@ -61,8 +64,9 @@ class DiscordApp {
     var g = this.guilds.get(guildObj.id);
     if(!g) this.addGuild(guildObj, cb, userObj);
     else {
+      g.verifyFields();
       if(userObj) g.addMember(userObj);
-      cb(g.verifyFields());
+      cb(g);
     }
   }
   updateGuild(guildObj, cb) {
