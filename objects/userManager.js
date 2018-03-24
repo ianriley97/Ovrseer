@@ -9,7 +9,7 @@ class UserManager {
   addUser(userObj, cb, fromDB) {
     var newU = new User(this.db, userObj, this.settings, fromDB);
     this.users.set(userObj.id, newU);
-    if(fromDB) console.log(`>> Init: User, "${oldU.name}", added.`);
+    if(fromDB) console.log(`>> Init: User, "${newU.name}", added.`);
     else {
       if(this.db) this.db.addUser(newU);
       else console.log(`> User, "${newU.name}", added.`);
