@@ -50,7 +50,7 @@ class Guild {
     this.guild_obj = (fromDB) ? guildObj.guild_obj : guildObj;
     this.cmd_prefix = (fromDB) ? guildObj.cmd_prefix : settings.cmd_prefix;
     this.memberIds = (fromDB) ? fromDB.memberIds : [];
-    this.blacklist = (fromDB) ? guildObj.blacklist : settings.blacklist;
+    this.blacklist = (fromDB) ? guildObj.blacklist : [];
   }
   verifyFields() {
 
@@ -109,7 +109,6 @@ class Guild {
     if(removedWords.length > 0) {
       removedWords = removedWords.join(', ');
       if(this.db) this.db.updateBlacklist('guilds', this, removedWords, ['removed', 'from']);
-      else console.log(`> Guild, "${this.name}", removed "${removedWords}" from their blacklist.`)
     }
   }
 }

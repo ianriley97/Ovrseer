@@ -57,11 +57,9 @@ class DiscordApp {
     }
   }
   parseMessage(content, checkList) {
-    if(!checkList) checkList = this.settings.blacklist;
     var found = this.word_parser.find(content, checkList);
   }
   replaceMessage(content, checkList) {
-    if(!checkList) checkList = this.settings.blacklist;
     var info = this.word_parser.replace(content, checkList);
     var found = info.found;
     return info.newStr;

@@ -13,11 +13,12 @@ exports.help = {
 
 exports.run = {
   discord: function(cmdParams) {
+    var app = cmdParams['app'];
     var message = cmdParams['message'];
-    var params = cmdParams['params'];
     var guild = cmdParams['guild'];
+    var globalBlacklist = app.settings.blacklist;
     var blacklist = guild.blacklist;
-    var str = `**Blacklist for "${guild.name}":**\n`;
-    message.channel.send(str + blacklist.join(', '));
+    var msg = `**Global Blacklist:**\n${globalBlacklist.join(', ')}\n\n**Blacklist for "${guild.name}":**\n${blacklist.join(', ')}`;
+    message.channel.send(msg);
   }
 };

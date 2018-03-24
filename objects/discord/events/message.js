@@ -14,7 +14,10 @@ module.exports = function(app, args) { // args = [message]
         cmd.user = user;
         app.runCmd(cmd);
       }
-      else app.parseMessage(message.content, guild.blacklist);
+      else {
+        var blacklist = app.settings.blacklist.concat(guild.blacklist);
+        app.parseMessage(message.content, blacklist);
+      }
     }, user);
   });
 };
