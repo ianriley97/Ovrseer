@@ -8,7 +8,7 @@ new (require(Path.join(__dirname, 'server.js')))((process.env.PORT || 3000), Set
 const CommandList = new (require(Path.join(__dirname, 'collections', 'commands.js')))(Path.join(__dirname, 'commands'), Settings.cmd_prefix);
 const UserManager = new (require(Path.join(__dirname, 'objects', 'userManager.js')));
 const WordParser = require(Path.join(__dirname, 'utilities', 'word-parser.js'));
-const DBManager = new (require(Path.join(__dirname, 'database.js')))(null, function(err, dbManager) {
+const DBManager = new (require(Path.join(__dirname, 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
   // Initialize app clients
   if(err) initAppClients();
   else dbManager.initUsers(UserManager, initAppClients, Settings);
