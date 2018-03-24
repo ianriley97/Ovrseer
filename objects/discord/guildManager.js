@@ -1,5 +1,46 @@
 const Path = require('path');
 
+class GuildManager {
+  constructor(db, settings) {
+    this.db = db;
+    this.settings = settings;
+    this.guilds = new Map();
+  }
+  addGuild(guildObj, cb, userObj, fromDB) {
+    var newG = new Guild(this.db, guildObj, this.settings, fromDB);
+    this.guilds.set(newG.id, newG);
+    if(fromDB) console.log(`>> Init: Guild, "${newG.name}", added.`);
+    else {
+      if(userObj) newG.addMember(userObj);
+      if(this.db) this.db.addGuild(newG);
+      else console.log(`> Guild, "${newG.name}", added.`);
+      if(cb) cb(newG);
+    }
+  }
+  getGuild(guildObj, cb, userObj) {
+    var g = this.guilds.get(guildObj.id);
+    if(!g) this.addGuild(guildObj, cb, userObj);
+    else {
+      g.verifyFields();
+      if(userObj) g.addMember(userObj);
+      cb(g);
+    }
+  }
+  updateGuild(guildObj, cb) {
+    this.getGuild(guildObj, function(guild) {
+      guild.update(guildObj);
+      if(cb) cb(guild);
+    });
+  }
+  removeGuild(guildObj) {
+    this.guilds.delete(guildObj.id);
+    if(this.db) this.db.removeGuild(guildObj);
+    else console.log(`> Guild, "${guildObj.name}", removed.`);
+  }
+}
+
+module.exports = GuildManager;
+
 class Guild {
   constructor(db, guildObj, settings, fromDB) {
     this.db = db;
@@ -8,7 +49,7 @@ class Guild {
     this.name = guildObj.name;
     this.guild_obj = (fromDB) ? guildObj.guild_obj : guildObj;
     this.cmd_prefix = (fromDB) ? guildObj.cmd_prefix : settings.cmd_prefix;
-    this.memberIds = [];
+    this.memberIds = (fromDB) ? fromDB.memberIds : [];
     this.blacklist = (fromDB) ? guildObj.blacklist : settings.blacklist;
   }
   verifyFields() {
@@ -40,7 +81,6 @@ class Guild {
   setCmdPrefix(prefix) {
     this.cmd_prefix = prefix;
     if(this.db) this.db.updateCmdPrefix('guilds', this, prefix);
-    else console.log(`> Guild, "${this.name}", updated their cmd prefix to "${prefix}".`)
   }
   addToBlacklist(words) {
     var newWords = [];
@@ -54,7 +94,6 @@ class Guild {
     if(newWords.length > 0) {
       newWords = newWords.join(', ');
       if(this.db) this.db.updateBlacklist('guilds', this, newWords, ['added', 'to']);
-      else  console.log(`> Guild, "${this.name}", added "${newWords}" to their blacklist.`);
     }
   }
   removeFromBlacklist(words) {
@@ -74,5 +113,3 @@ class Guild {
     }
   }
 }
-
-module.exports = Guild;

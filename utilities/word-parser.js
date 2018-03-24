@@ -1,11 +1,7 @@
 const Path = require('path');
 const FileSystem = require('fs');
 
-const Blacklist = FileSystem.readFileSync(Path.join(__dirname, 'blacklist.txt'), 'utf-8').split('\n');
-Blacklist.pop();
-
 module.exports = {
-  blacklist: Blacklist.slice(),
   find: find,
   replace: replace
 }
