@@ -1,7 +1,7 @@
 const FileSystem = require('fs');
 const Path = require('path');
 
-const ViewDir = Path.join(__dirname, '..', 'views');
+const ViewDir = Path.join(__dirname, '..', 'view');
 const TemplateView = FileSystem.readFileSync(Path.join(ViewDir, 'template.html'));
 const FileTypes = [
   ['html', '<body>'],

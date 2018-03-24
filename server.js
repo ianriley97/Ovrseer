@@ -4,9 +4,9 @@ const HTTP = require('http');
 const FileSystem = require('fs');
 const Path = require('path');
 
-const PORT = process.env.PORT || 4040;
+const PORT = process.env.PORT || 3000;
 
-const PageRouter = require(Path.join(__dirname, 'controllers', 'page-router.js'));
+const PageRouter = require(Path.join(__dirname, 'controller', 'page-router.js'));
 
 function serveError(res, err, resCode, resMsg) {
   console.error(err);
