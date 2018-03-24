@@ -95,9 +95,9 @@ class DatabaseManager {
 
 module.exports = DatabaseManager;
 
-function convert(item) {
-  var res = item.rows;
-  if(res.length == 0) return null;
-  res = res[0];
-  return res;
+function convert(res) {
+  var data = res.rows;
+  if(data.length == 0) return null;
+  data = data[0];
+  return data;
 }
