@@ -9,14 +9,11 @@ const CommandList = new (require(Path.join(__dirname, 'collections', 'commands.j
 const UserManager = new (require(Path.join(__dirname, 'objects', 'userManager.js')));
 const WordParser = require(Path.join(__dirname, 'utilities', 'word-parser.js'));
 const DBManager = new (require(Path.join(__dirname, 'database.js')))(null, function(err, dbManager) {
-  // Initialize apps/clients
-  const DiscordApp = require(Path.join(__dirname, 'objects', 'discord', 'discord.js'));
-  if(err) {
-    new DiscordApp(process.env.DISCORD_BOT_TOKEN, Settings, CommandList, UserManager, WordParser);
-  }
-  else {
-    dbManager.initUsers(UserManager, function() {
-      new DiscordApp(process.env.DISCORD_BOT_TOKEN, Settings, CommandList, UserManager, WordParser, DBManager);
-    });
-  }
-}, Settings);
+  // Initialize app clients
+  if(err) initAppClients();
+  else dbManager.initUsers(UserManager, initAppClients, Settings);
+});
+
+function initAppClients(dbManager) {
+  new (require(Path.join(__dirname, 'objects', 'discord', 'discord.js')))(process.env.DISCORD_BOT_TOKEN, Settings, CommandList, UserManager, WordParser, dbManager);
+}
