@@ -3,11 +3,14 @@ const HTTP = require('http');
 const Path = require('path');
 require('dotenv').config();
 
-const ViewManager = new (require(Path.join(__dirname, 'controller', 'view-manager.js')))();
-const DB = new (require(Path.join(__dirname, 'model', 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
-  const DataManager = new (require(Path.join(__dirname, 'controller', 'data-manager.js')))(dbManager);
-  const RequestRouter = new (require(Path.join(__dirname, 'controller', 'request-router.js')))(ViewManager, DataManager);
-  RequestRouter.buildCaches(function() {
+var viewManager = new (require(Path.join(__dirname, 'controller', 'view-manager.js')))();
+var dataManager;
+var requestRouter;
+
+const DBManager = new (require(Path.join(__dirname, 'model', 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
+  dataManager = new (require(Path.join(__dirname, 'controller', 'data-manager.js')))(dbManager);
+  requestRouter = new (require(Path.join(__dirname, 'controller', 'request-router.js')))(viewManager, dataManager);
+  requestRouter.buildCaches(function() {
     const PORT = process.env.PORT || 3000;
     var server = HTTP.createServer(handleRequest);
     server.listen(PORT, function() {
@@ -18,7 +21,7 @@ const DB = new (require(Path.join(__dirname, 'model', 'database.js')))(process.e
 
 function handleRequest(req, res) {
   if(req.method == 'GET') {
-    RequestRouter.route(req, function (err, data) {
+    requestRouter.route(req, function (err, data) {
       if(err) serveError(res, err, 500, 'Server Error');
       else res.end(data);
     });

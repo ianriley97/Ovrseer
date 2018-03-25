@@ -26,9 +26,13 @@ class ViewManager {
     });
   }
   serveView(view, cb) {
-    console.log(TemplateView);
-    try { sendRes(null, viewCache.get(view)); }
-    catch(err) { cb(err); }
+    try {
+      var viewData = viewCache.get(view);
+      cb(null, viewData);
+    }
+    catch(err) {
+      cb(err);
+    }
   }
 }
 

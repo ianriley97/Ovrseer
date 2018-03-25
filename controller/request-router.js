@@ -10,23 +10,16 @@ class RequestRouter {
     viewManager.cacheViews();
     setTimeout(cb, 500);
   }
-  route(req, sendRes) {
+  route(req, cb) {
     switch(req.url) {
       case '/':
-        viewManager.serveView('home', sendRes);
+        viewManager.serveView('home', cb);
         break;
       case '/request':
-        renderReq(req['params'], sendRes);
+        dataManager.serveData(req['params'], cb);
         break;
     }
   }
 }
 
 module.exports = RequestRouter;
-
-function renderReq(params, sendRes) {
-  if(params) {
-
-  }
-  else sendRes(null, 'An Error Occurred.');
-}
