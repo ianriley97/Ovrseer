@@ -1,27 +1,32 @@
-require('dotenv').config();
-// Node Modules
+// require node modules
 const HTTP = require('http');
-const FileSystem = require('fs');
 const Path = require('path');
+require('dotenv').config();
 
-const PORT = process.env.PORT || 3000;
+const ViewManager = new (require(Path.join(__dirname, 'controller', 'view-manager.js')))();
+const DB = new (require(Path.join(__dirname, 'model', 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
+  const DataManager = new (require(Path.join(__dirname, 'controller', 'data-manager.js')))(dbManager);
+  const RequestRouter = new (require(Path.join(__dirname, 'controller', 'request-router.js')))(ViewManager, DataManager);
+  RequestRouter.buildCaches(function() {
+    const PORT = process.env.PORT || 3000;
+    var server = HTTP.createServer(handleRequest);
+    server.listen(PORT, function() {
+      console.log("Server listening on port " + PORT);
+    });
+  });
+});
 
-const PageRouter = require(Path.join(__dirname, 'controller', 'page-router.js'));
+function handleRequest(req, res) {
+  if(req.method == 'GET') {
+    RequestRouter.route(req, function (err, data) {
+      if(err) serveError(res, err, 500, 'Server Error');
+      else res.end(data);
+    });
+  }
+}
 
 function serveError(res, err, resCode, resMsg) {
   console.error(err);
   res.statusCode = resCode;
   res.end(resMsg);
 }
-
-function handleRequest(req, res) {
-  if(req.method == 'GET') PageRouter.render(req.url, function (err, data) {
-    if(err) serveError(res, err, 500, 'Server Error');
-    else res.end(data);
-  });
-}
-
-var server = HTTP.createServer(handleRequest);
-server.listen(PORT, function() {
-  console.log("Server listening on port " + PORT);
-});
