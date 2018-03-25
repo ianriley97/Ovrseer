@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Ovrseer, the Discord bot, homepage.">
     <meta name="author" content="Dayton Taylor">
-    <title>Ovrseer | Home</title>
+    <title>Ovrseer | <%view%></title>
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon-precomposed" href="favicon.ico" />
     <style>
+      <%style%>
     </style>
   </head>
   <body>
+    <%content%>
     <script>
+      <%script%>
     </script>
   </body>
 </html>
