@@ -3,11 +3,12 @@ const HTTP = require('http');
 const Path = require('path');
 require('dotenv').config();
 
-var viewManager = new (require(Path.join(__dirname, 'controller', 'view-manager.js')))();
+var viewManager;
 var dataManager;
 var requestRouter;
 
 const DBManager = new (require(Path.join(__dirname, 'model', 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
+  viewManager = new (require(Path.join(__dirname, 'controller', 'view-manager.js')))();
   dataManager = new (require(Path.join(__dirname, 'controller', 'data-manager.js')))(dbManager);
   requestRouter = new (require(Path.join(__dirname, 'controller', 'request-router.js')))(viewManager, dataManager);
   requestRouter.buildCaches(function() {
