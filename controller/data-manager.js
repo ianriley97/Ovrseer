@@ -1,17 +1,15 @@
-var db;
-
 class DataManager {
   constructor(db) {
-    db = db;
+    this.db = db;
   }
   serveData(params, cb) {
-    renderReq(params, cb);
+    parseReq(params, cb);
   }
 }
 
 module.exports = DataManager;
 
-function renderReq(params, cb) {
+function parseReq(params, cb) {
   if(params) {
 
   }

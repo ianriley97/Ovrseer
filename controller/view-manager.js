@@ -8,11 +8,10 @@ const FileTypes = [
   ['css', '<%style%>'],
   ['js', '<%script%>']
 ];
-var viewCache;
 
 class ViewManager {
   constructor() {
-    viewCache = new Map();
+    this.viewCache = new Map();
   }
   cacheViews() {
     var dirItems = FileSystem.readdirSync(ViewDir);
@@ -20,14 +19,14 @@ class ViewManager {
       var stats = FileSystem.statSync(Path.join(ViewDir, item));
       if(stats.isDirectory()) {
         constructView(item, function(data) {
-          viewCache.set(item, data);
+          this.viewCache.set(item, data);
         });
       }
     });
   }
   serveView(view, cb) {
     try {
-      var viewData = viewCache.get(view);
+      var viewData = this.viewCache.get(view);
       cb(null, viewData);
     }
     catch(err) {

@@ -1,22 +1,19 @@
-var viewManager;
-var dataManager;
-
 class RequestRouter {
   constructor(vm, dm) {
-    viewManager = vm;
-    dataManager = dm;
+    this.viewManager = vm;
+    this.dataManager = dm;
   }
   buildCaches(cb) {
-    viewManager.cacheViews();
+    this.viewManager.cacheViews();
     setTimeout(cb, 500);
   }
   route(req, cb) {
     switch(req.url) {
       case '/':
-        viewManager.serveView('home', cb);
+        this.viewManager.serveView('home', cb);
         break;
       case '/request':
-        dataManager.serveData(req['params'], cb);
+        this.dataManager.serveData(req['params'], cb);
         break;
     }
   }
