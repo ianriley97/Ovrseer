@@ -1,7 +1,6 @@
-var groupCount = 0;
-
 class Commands {
   constructor(cmdFolderPath, cmdPrefix) {
+    this.groupCount = 0;
     this.groups = new Map();
     this.commands = [new Map()];
     this.defCmdPrefix = cmdPrefix;
@@ -13,7 +12,7 @@ class Commands {
     var groupIndex = this.groups.get(cmdGroup);
     if(!groupIndex) {
       if(cmdGroup) {
-        groupIndex = ++groupCount;
+        groupIndex = ++this.groupCount;
         this.groups.set(cmdGroup, groupIndex);
         this.commands.push(new Map());
       }
