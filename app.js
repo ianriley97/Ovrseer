@@ -9,11 +9,7 @@ const CommandList = new (require(Path.join(__dirname, 'collections', 'commands.j
 const UserManager = new (require(Path.join(__dirname, 'objects', 'userManager.js')));
 const WordParser = require(Path.join(__dirname, 'utilities', 'word-parser.js'));
 const DBManager = new (require(Path.join(__dirname, 'database.js')))(process.env.DATABASE_URL, function(err, dbManager) {
+  if(dbManager) dbManager.initUsers(UserManager, initAppClients, Settings);
   // Initialize app clients
-  if(err) initAppClients();
-  else dbManager.initUsers(UserManager, initAppClients, Settings);
-});
-
-function initAppClients(dbManager) {
   new (require(Path.join(__dirname, 'objects', 'discord', 'discord.js')))(process.env.DISCORD_BOT_TOKEN, Settings, CommandList, UserManager, WordParser, dbManager);
-}
+});

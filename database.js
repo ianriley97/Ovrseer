@@ -8,7 +8,10 @@ class DatabaseManager {
     });
     var dbm = this;
     this.db.connect(function(err) {
-      if(err) console.error(err);
+      if(err) {
+        dbm = null;
+        console.error(err);
+      }
       else console.log('Database connection successful');
       cb(err, dbm);
     });
