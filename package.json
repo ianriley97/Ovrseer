@@ -12,7 +12,7 @@
     "moment": "^2.21.0",
     "opusscript": "0.0.4",
     "pg": "7.4.1",
-    "request": "^2.85.0",
+    "request": "2.85.0",
     "return-deep-diff": "0.2.9",
     "ytdl-core": "^0.18.7"
   },
