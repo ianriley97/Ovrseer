@@ -11,7 +11,7 @@ class DataManager {
   serve(req, res) {
     var urlArr = req.url.split('/').slice(2);
     if(this.db) this.db.query(getQueryStr(urlArr), function(dbRes) {
-      var rows = res.rows;
+      var rows = dbRes.rows;
       res.end(rows);
     });
     else res.end('[Connection Error]');
