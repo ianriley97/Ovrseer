@@ -21,16 +21,6 @@ const DBManager = new (require(Path.join(__dirname, 'model', 'database.js')))(pr
 });
 
 function handleRequest(req, res) {
-  if(req.method == 'GET') {
-    requestRouter.route(req, function (err, data) {
-      if(err) serveError(res, err, 500, 'Server Error');
-      else res.end(data);
-    });
-  }
-}
-
-function serveError(res, err, resCode, resMsg) {
-  console.error(err);
-  res.statusCode = resCode;
-  res.end(resMsg);
+  if(req.method == 'GET') requestRouter.get(req, res);
+  else if(req.method == 'POST') requestRouter.post(req, res);
 }

@@ -14,23 +14,29 @@ class ViewManager {
     this.viewCache = new Map();
   }
   cacheViews() {
+    var viewCache = this.viewCache;
     var dirItems = FileSystem.readdirSync(ViewDir);
     dirItems.forEach(function(item) {
       var stats = FileSystem.statSync(Path.join(ViewDir, item));
       if(stats.isDirectory()) {
         constructView(item, function(data) {
-          this.viewCache.set(item, data);
+          viewCache.set(item, data);
         });
       }
     });
   }
-  serveView(view, cb) {
-    try {
-      var viewData = this.viewCache.get(view);
-      cb(null, viewData);
-    }
-    catch(err) {
-      cb(err);
+  serve(req, res) {
+    var data = this.viewCache.get(req.view);
+    if(data) res.end(data);
+    else {
+      FileSystem.readFile(Path.join(ViewDir, req.url), function(err, data) {
+        if(err) {
+          console.log(err);
+          res.statusCode = 404;
+          res.end('File Not Found.');
+        }
+        else res.end(data);
+      });
     }
   }
 }

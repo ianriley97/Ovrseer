@@ -1,3 +1,7 @@
+const ViewDirects = new Map([
+  ['/', 'home']
+]);
+
 class RequestRouter {
   constructor(vm, dm) {
     this.viewManager = vm;
@@ -7,15 +11,15 @@ class RequestRouter {
     this.viewManager.cacheViews();
     setTimeout(cb, 500);
   }
-  route(req, cb) {
-    switch(req.url) {
-      case '/':
-        this.viewManager.serveView('home', cb);
-        break;
-      case '/request':
-        this.dataManager.serveData(req['params'], cb);
-        break;
+  get(req, res) {
+    if(req.url.includes('/request')) this.dataManager.serve(req, res);
+    else {
+      req.view = ViewDirects.get(req.url);
+      this.viewManager.serve(req, res);
     }
+  }
+  post(req, res) {
+
   }
 }
 
