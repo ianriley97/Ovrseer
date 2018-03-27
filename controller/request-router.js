@@ -12,7 +12,7 @@ class RequestRouter {
     setTimeout(cb, 500);
   }
   get(req, res) {
-    if(req.url.includes('/request')) this.dataManager.serve(req, res);
+    if(req.url.startsWith('/request')) this.dataManager.serve(req, res);
     else {
       req.view = ViewDirects.get(req.url);
       this.viewManager.serve(req, res);
