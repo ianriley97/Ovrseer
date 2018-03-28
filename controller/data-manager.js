@@ -10,11 +10,12 @@ class DataManager {
   }
   serve(req, res) {
     var urlArr = req.url.split('/').slice(2);
-    if(this.db) this.db.query(getQueryStr(urlArr), function(dbRes) {
+    if(this.db) this.db.query(getQueryStr(urlArr), function(dbRes, db, err) {
       res.writeHead(200, {"Content-Type": "application/json"});
-      res.end(convertObjToStr(dbRes.rows));
+      if(err) res.end(null);
+      else res.end(convertObjToStr(dbRes.rows));
     });
-    else res.end('[Connection Error]');
+    else res.end(null);
   }
 }
 
@@ -27,9 +28,14 @@ function getQueryStr(urlArr) {
     var col = urlArr[1];
     var id = urlArr[2];
     queryStr += 'SELECT * FROM ' + table;
-    if(col && id) queryStr += ' WHERE ' + table + '.' + col + '=' + id;
+    if(col && id) {
+      queryStr += ' WHERE ' + table + '.' + col + '=';
+      if(isNaN(id)) queryStr += '\'' + id + '\'';
+      else queryStr += id;
+    }
     queryStr += ';';
   }
+  console.log(queryStr);
   return queryStr;
 }
 

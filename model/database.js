@@ -18,9 +18,10 @@ class DatabaseManager {
   }
   query(queryStr, cb) {
     var dbObj = this;
-    this.db.query(queryStr).then(function(res) {
-      if(cb) cb(res, dbObj);
-    }).catch(function(err) { console.error(err); });
+    this.db.query(queryStr, function(err, res) {
+      // console.error(err);
+      if(cb) cb(res, dbObj, err);
+    });
   }
 }
 
