@@ -8,7 +8,8 @@ module.exports = function(app, args) { // args = [message]
   var appGuild = message.guild;
   app.getUser(appUser, function(user) {
     app.getGuild(appGuild, function(guild) {
-      var cmdInfo = app.parseCmd(message.content, guild.cmd_prefix);
+      var msgContent = message.content;
+      var cmdInfo = app.parseCmd(msgContent, guild.cmd_prefix);
       if(cmdInfo) {
         cmdInfo.app = app,
         cmdInfo.user = user;
@@ -19,7 +20,7 @@ module.exports = function(app, args) { // args = [message]
       else {
         app.getBlacklist(guild, function(words) {
           var blacklist = words.concat(app.settings.blacklist);
-          app.parseMessage(message.content, blacklist);
+          app.parseMessage(user, guild, msgContent, blacklist);
         });
       }
     }, appUser);
