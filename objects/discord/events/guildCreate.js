@@ -11,5 +11,6 @@ module.exports = function(app, args) { // args = [guild]
         ${app.settings.app_purpose_notice_msg}
       `);
     }
+    app.updateDbClient(client);
   });
 };
