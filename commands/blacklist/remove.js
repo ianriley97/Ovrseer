@@ -13,12 +13,12 @@ exports.help = {
 
 exports.run = {
   discord: function(cmdParams) {
-    var message = cmdParams['message'];
-    var params = cmdParams['params'];
+    var app = cmdParams['app'];
     var guild = cmdParams['guild'];
+    var params = cmdParams['params'];
     if(params.length > 0) {
       var words = params.split(' ');
-      guild.removeFromBlacklist(words);
+      app.removeFromBlacklist(guild, words);
     }
   }
 };

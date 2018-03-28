@@ -1,68 +1,116 @@
+const Path = require('path');
 const DiscordJS = require('discord.js');
 
 class DiscordApp {
-  constructor(botToken, settings, commandList, userManager, wordParser, dbManager) {
-    const Path = require('path');
-    this.client = new DiscordJS.Client({owner:settings.discord_owner_ids});
-    require(Path.join(__dirname, '..', '..', 'utilities', 'event-loader.js'))(this, __dirname);
+  constructor(botToken, settings, commandList, dbManager, userManager, wordParser) {
+    this.settings = settings;
     this.db = dbManager;
     this.commands = commandList;
-    this.settings = settings;
-    this.word_parser = wordParser;
     this.userManager = userManager;
-    if(dbManager) {
-      dbManager.initGuilds(this, function(app, guildManager) {
-        app.this.guildManager = guildManager;
-        app.client.login(botToken);
-      });
-    }
-    else {
-      this.guildManager = new (require(Path.join(__dirname, 'guildManager.js')))(this.db, this.settings);
-      this.client.login(botToken);
-    }
+    this.wordParser = wordParser;
+    this.client = new DiscordJS.Client({owner:settings.discord_owner_ids});
+    require(Path.join(__dirname, '..', '..', 'utilities', 'event-loader.js'))(this, __dirname);
+    this.client.login(botToken);
   }
-  addUser(userObj, cb) {
-    this.userManager.addUser(userObj, cb);
-  }
-  getUser(userObj, cb) {
-    this.userManager.getUser(userObj, cb);
-  }
-  updateUser(userObj, cb) {
-    this.userManager.updateUser(userObj, cb);
-  }
-  removeUser(userObj) {
-    this.userManager.removeUser(userObj);
-  }
-  addGuild(guildObj, cb, userObj) {
-    this.guildManager.addGuild(guildObj, cb, userObj);
-  }
-  getGuild(guildObj, cb, userObj) {
-    this.guildManager.getGuild(guildObj, cb, userObj);
-  }
-  updateGuild(guildObj, cb) {
-    this.guildManager.getGuild(guildObj, cb);
-  }
-  removeGuild(guildObj) {
-    this.guildManager.removeGuild(guildObj);
-  }
-  checkForCmd(msg, prefix) {
-    return this.commands.parseForCmd(msg, prefix);
+  parseCmd(msg, prefix) {
+    return this.commands.parseCmd(msg, prefix);
   }
   runCmd(cmdParams) {
-    var cmd = this.commands.get(cmdParams['command'], cmdParams['group']);
-    if(cmd) {
-      var exe = cmd.run['discord'];
-      var validPrefix = (cmdParams.default && cmd.config.default) || !cmdParams.default;
-      if(exe && cmd.config.enabled && validPrefix) exe(cmdParams);
-    }
+    cmdParams.label = 'discord';
+    this.commands.runCmd(cmdParams);
   }
   parseMessage(content, checkList) {
-    var found = this.word_parser.find(content, checkList);
+    var found = this.wordParser.find(content, checkList);
   }
   replaceMessage(content, checkList) {
-    var info = this.word_parser.replace(content, checkList);
+    var info = this.wordParser.replace(content, checkList);
     var found = info.found;
     return info.newStr;
+  }
+  addGuild(appGuild, cb, appUser) {
+    var app = this;
+    this.db.query(`INSERT INTO guilds (id, name, guild_obj, cmd_prefix) VALUES (${appGuild.id}, '${appGuild.name}', '${this.db.convertFromObj(appGuild)}', '${this.commands.defCmdPrefix}') ON CONFLICT DO NOTHING RETURNING *;`, function(res, db) {
+      console.log(`DB: Guild, "${appGuild.name}", added.`);
+      app.checkForGuildMember(appGuild, appUser);
+      cb(res.rows[0]);
+    });
+  }
+  getGuild(appGuild, cb, appUser) {
+    var app = this;
+    this.db.query(`SELECT * FROM guilds WHERE guilds.id=${appGuild.id};`, function(res, db) {
+      if(res.rows.length == 0) app.addGuild(appGuild, cb, appUser);
+      else {
+        app.checkForGuildMember(appGuild, appUser);
+        cb(res.rows[0]);
+      }
+    });
+  }
+  updateGuild(appGuild) {
+    this.db.query(`UPDATE guilds SET name='${appGuild.name}', guild_obj='${this.db.convertFromObj(appGuild)}' WHERE guilds.id=${appGuild.id};`);
+  }
+  removeGuild(appGuild) {
+    this.db.query(`DELETE FROM guilds WHERE guilds.id=${appGuild.id};`, function(res, db) {
+      if(res.rows.length > 0) console.log(`DB: Guild, "${appGuild.name}", removed.`);
+    });
+  }
+  addGuildMember(appGuild, appUser) {
+    this.db.query(`INSERT INTO guilds_users (guild_id, user_id) VALUES (${appGuild.id}, ${appUser.id}) RETURNING *;`, function(res, db) {
+      console.log(`DB: Member, "${appUser.username}", added to Guild, "${appGuild.name}".`);
+    });
+  }
+  checkForGuildMember(appGuild, appUser) {
+    if(!appUser) return;
+    var app = this;
+    this.db.query(`SELECT * FROM guilds_users WHERE guild_id=${appGuild.id} AND user_id=${appUser.id};`, function(res, db) {
+      if(res.rows.length == 0) app.addGuildMember(appGuild, appUser);
+    });
+  }
+  removeGuildMember(appGuild, appUser) {
+    this.db.query(`DELETE FROM guilds_users WHERE guild_id=${appGuild.id} AND user_id=${appUser.id};`, function(res, db) {
+      if(res.rows.length > 0) console.log(`DB: Member, "${appUser.username}", removed from Guild, "${appGuild.name}".`);
+    });
+  }
+  updateCmdPrefix(dbGuild, prefix) {
+    this.db.query(`UPDATE guilds SET cmd_prefix='${prefix}' WHERE guilds.id=${dbGuild.id};`);
+  }
+  addToBlacklist(dbGuild, words) {
+    var thisDb = this.db;
+    words.forEach(function(word) {
+      thisDb.query(`SELECT * FROM guilds_blacklists WHERE guild_id=${dbGuild.id} AND word='${word}';`, function(res, db) {
+        if(res.rows.length == 0) db.query(`INSERT INTO guilds_blacklists (guild_id, word) VALUES (${dbGuild.id}, '${word}') RETURNING *;`);
+      });
+    });
+  }
+  getBlacklist(dbGuild, cb) {
+    this.db.query(`SELECT word FROM guilds_blacklists WHERE guild_id='${dbGuild.id}';`, function(res, db) {
+      var words = [];
+      var rows = res.rows;
+      var length = rows.length;
+      for(var i = 0; i < length; i++) words.push(rows[i].word);
+      cb(words);
+    });
+  }
+  removeFromBlacklist(dbGuild, words) {
+    var thisDb = this.db;
+    words.forEach(function(word) {
+      thisDb.query(`DELETE FROM guilds_blacklists WHERE guild_id=${dbGuild.id} AND word='${word}'`);
+    });
+  }
+  addUser(appUser, cb) {
+    this.db.query(`INSERT INTO users (discord_id, discord_username, discord_user_obj) VALUES (${appUser.id}, '${appUser.username}', '${this.db.convertFromObj(appUser)}') ON CONFLICT DO NOTHING RETURNING *;`, function(res, db) {
+      console.log(`DB: User, "${appUser.username}", added.`);
+      cb(res.rows[0]);
+    });
+  }
+  getUser(appUser, cb) {
+    var app = this;
+    this.db.query(`SELECT * FROM users WHERE users.discord_id=${appUser.id};`, function(res, db) {
+      if(res.rows.length == 0) app.addUser(appUser, cb);
+      else cb(res.rows[0]);
+    });
+  }
+  updateUser(appUser) {
+    this.db.query(`UPDATE users SET discord_username='${appUser.username}', discord_user_obj='${this.db.convertFromObj(appUser)}' WHERE users.discord_id=${appUser.id};`);
   }
 }
 

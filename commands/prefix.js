@@ -17,15 +17,7 @@ exports.run = {
     var message = cmdParams['message'];
     var guild = cmdParams['guild'];
     var params = cmdParams['params'];
-    message.reply(getStateStr(guild, params) + "**" + guild.cmd_prefix + "**");
+    if(params.length > 0) app.updateCmdPrefix(guild, params);
+    else message.reply(` current prefix is **${guild.cmd_prefix}**`);
   }
 };
-
-function getStateStr(guild, params) {
-  var str = "Current prefix is: ";
-  if(params.length > 0) {
-    guild.setCmdPrefix(params);
-    str = "Changed the prefix to: ";
-  }
-  return str;
-}

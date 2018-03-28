@@ -1,23 +1,27 @@
 module.exports = function(app, args) { // args = [message]
   var client = app.client;
   var message = args[0];
-  if(message.author.bot) return;
+  var appUser = message.author;
+  if(appUser.bot) return;
   var channel = message.channel;
   if(channel.type == 'dm') return;
-  app.getUser(message.author, function(user) {
-    app.getGuild(message.guild, function(guild) {
-      var cmd = app.checkForCmd(message.content, guild.cmd_prefix);
-      if(cmd) {
-        cmd.app = app,
-        cmd.message = message;
-        cmd.guild = guild;
-        cmd.user = user;
-        app.runCmd(cmd);
+  var appGuild = message.guild;
+  app.getUser(appUser, function(user) {
+    app.getGuild(appGuild, function(guild) {
+      var cmdInfo = app.parseCmd(message.content, guild.cmd_prefix);
+      if(cmdInfo) {
+        cmdInfo.app = app,
+        cmdInfo.user = user;
+        cmdInfo.guild = guild;
+        cmdInfo.message = message;
+        app.runCmd(cmdInfo);
       }
       else {
-        var blacklist = app.settings.blacklist.concat(guild.blacklist);
-        app.parseMessage(message.content, blacklist);
+        app.getBlacklist(guild, function(words) {
+          var blacklist = words.concat(app.settings.blacklist);
+          app.parseMessage(message.content, blacklist);
+        });
       }
-    }, user);
+    }, appUser);
   });
 };

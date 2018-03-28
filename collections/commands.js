@@ -1,4 +1,4 @@
-class Commands {
+class CommandManager {
   constructor(cmdFolderPath, cmdPrefix) {
     this.groupCount = 0;
     this.groups = new Map();
@@ -31,7 +31,7 @@ class Commands {
   isCmdGroup(group) {
     return this.groups.has(group);
   }
-  parseForCmd(msg, prefix) {
+  parseCmd(msg, prefix) {
     var cmdInfo;
     if(msg.startsWith(prefix)) {
       cmdInfo = parseCmd(this, msg, prefix);
@@ -43,9 +43,16 @@ class Commands {
     }
     return cmdInfo;
   }
+  runCmd(cmdParams) {
+    var cmd = this.get(cmdParams['command'], cmdParams['group']);
+    if(cmd) {
+      var exe = cmd.run[cmdParams['label']];
+      if(exe && cmd.config.enabled && (cmdParams.default && cmd.config.default) || !cmdParams.default) exe(cmdParams);
+    }
+  }
 }
 
-module.exports = Commands;
+module.exports = CommandManager;
 
 function readDirectory(listObj, dirPath, group) {
   const FileSystem = require('fs');

@@ -1,7 +1,7 @@
 module.exports = function(app, args) { // args = [member]
   var client = app.client;
   var member = args[0];
-  app.getUser(member, function(user) {
+  app.getUser(member.user, function(user) {
     app.getGuild(message.guild, function(guild) {
       member.send(`
         Hello and Welcome to "${guild.name}"!\n

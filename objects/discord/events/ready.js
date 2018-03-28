@@ -1,5 +1,6 @@
 module.exports = function(app) {
   var client = app.client;
-  client.user.setActivity(`${app.settings.cmd_prefix}prefix | ${app.settings.cmd_prefix}help`);
+  var defPrefix = app.commands.defCmdPrefix;
+  client.user.setActivity(`${defPrefix}prefix | ${defPrefix}help`);
   console.log('Discord client, ' + client.user.tag + ', is ready.');
 };

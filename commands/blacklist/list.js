@@ -14,11 +14,12 @@ exports.help = {
 exports.run = {
   discord: function(cmdParams) {
     var app = cmdParams['app'];
-    var message = cmdParams['message'];
     var guild = cmdParams['guild'];
+    var message = cmdParams['message'];
     var globalBlacklist = app.settings.blacklist;
-    var blacklist = guild.blacklist;
-    var msg = `**Global Blacklist:**\n${globalBlacklist.join(', ')}\n\n**Blacklist for "${guild.name}":**\n${blacklist.join(', ')}`;
-    message.channel.send(msg);
+    app.getBlacklist(guild, function(blacklist) {
+      var msg = `**Global Blacklist:**\n${globalBlacklist.join(', ')}\n\n**Blacklist for "${guild.name}":**\n${blacklist.join(', ')}`;
+      message.channel.send(msg);
+    });
   }
 };

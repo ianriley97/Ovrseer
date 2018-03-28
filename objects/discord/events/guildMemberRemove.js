@@ -3,7 +3,7 @@ module.exports = function(app, args) { // args = [member]
   var member = args[0];
   app.getUser(member, function(user) {
     app.getGuild(member.guild, function(guild) {
-      guild.removeMember(user);
+      app.removeGuildMember(guild, user);
     });
   });
 };
