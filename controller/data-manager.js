@@ -35,7 +35,6 @@ function getQueryStr(urlArr) {
     }
     queryStr += ';';
   }
-  console.log(queryStr);
   return queryStr;
 }
 
