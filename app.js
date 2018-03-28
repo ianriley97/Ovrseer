@@ -9,5 +9,5 @@ new (require(Path.join(__dirname, 'objects', 'database-manager.js')))(process.en
   const UserManager = new (require(Path.join(__dirname, 'objects', 'user-manager.js')))(dbManager, Settings);
   const DiscordApp = new (require(Path.join(__dirname, 'objects', 'discord', 'discord.js')))(process.env.DISCORD_BOT_TOKEN, Settings, CommandList, dbManager, UserManager, WordParser);
   // Initialize server listener to allow stable port connection on Heroku
-  new (require(Path.join(__dirname, 'server.js')))((process.env.PORT || 3000), Settings, dbManager, DiscordApp.client);
+  new (require(Path.join(__dirname, 'server.js')))((process.env.PORT || 3000), Settings, DiscordApp);
 });
