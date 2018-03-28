@@ -1,4 +1,4 @@
-class DBManager {
+class DatabaseManager {
   constructor(connection, cb, settings) {
     this.settings = settings;
     const {Client} = require('pg');
@@ -24,4 +24,4 @@ class DBManager {
   }
 }
 
-module.exports = DBManager;
+module.exports = DatabaseManager;
