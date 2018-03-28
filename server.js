@@ -49,6 +49,7 @@ function convertObjToString(obj) {
     return value;
   });
   const filter = new RegExp('\\b(' + PrivateInfo.join('|') + ')\\b', 'gim');
-  str = str.replace(filter, '');
+  if(str) str = str.replace(filter, '');
+  else str = '';
   return str;
 }
